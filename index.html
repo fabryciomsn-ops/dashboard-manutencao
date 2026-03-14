@@ -4,18 +4,24 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard MultCaixa</title>
+        <title>Dashboard Manutenção - MultCaixa</title>
         <style>
             body { font-family: sans-serif; background:#f4f7f6; margin:0; padding:20px; }
-            .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-            header { background:#2d3175; color:white; padding:20px; border-radius:8px; margin-bottom:20px; text-align:center; }
+            .container { max-width: 1200px; margin: auto; }
+            .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+            header { background:#2d3175; color:white; padding:20px; border-radius:10px; margin-bottom:20px; text-align:center; }
         </style>
     </head>
     <body>
-        <header>
-            <h1>Manutenção Industrial - MultCaixa</h1>
-            <p>Atualizado em: 14/03/2026 12:38</p>
-        </header>
-        <div class="grid"></div>
+        <div class="container">
+            <header>
+                <h1 style="margin:0;">Manutenção Industrial</h1>
+                <p style="margin:5px 0 0 0; opacity:0.8;">Dashboard de Disponibilidade de Máquinas</p>
+            </header>
+            <div class="grid"></div>
+            <footer style="margin-top:30px; text-align:center; font-size:12px; color:#999;">
+                Atualizado em: 14/03/2026 12:42
+            </footer>
+        </div>
     </body>
     </html>
