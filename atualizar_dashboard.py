@@ -5,6 +5,7 @@ import pandas as pd
 from datetime import datetime
 from pathlib import Path
 import subprocess
+import sys
 
 # --- CONFIGURAÇÕES DE ESTILO ---
 AZUL_MC = "#2d3175"
@@ -12,7 +13,7 @@ VERDE = "#22c55e"
 VERMELHO = "#ef4444"
 
 def criar_html_individual(m, periodo):
-    """Gera o layout do relatório individual com o botão de impressão"""
+    """Gera o layout com o botão de impressão fixo no topo"""
     eventos = "".join([
         f"<tr><td>{e['data']}</td><td>{e['desc']}</td><td>{e['pecas']}</td><td>{e['tempo']} min</td></tr>"
         for e in m['events'] if str(e['desc']).upper() != 'OK'
@@ -23,32 +24,31 @@ def criar_html_individual(m, periodo):
     <html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
-        <title>Relatório - {m['name']}</title>
         <style>
-            body {{ font-family: 'Segoe UI', Arial, sans-serif; margin: 40px; color: #333; }}
-            .no-print {{ text-align: right; margin-bottom: 20px; }}
-            .btn-print {{ background: {AZUL_MC}; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }}
-            .header {{ border-bottom: 3px solid {AZUL_MC}; padding-bottom: 10px; margin-bottom: 20px; }}
-            .title {{ color: {AZUL_MC}; font-size: 24px; font-weight: bold; }}
-            .kpis {{ display: flex; gap: 20px; margin: 20px 0; }}
-            .card {{ background: #f8fafc; padding: 15px; border-radius: 8px; flex: 1; text-align: center; border: 1px solid #e2e8f0; }}
-            .card b {{ display: block; font-size: 12px; color: #64748b; text-transform: uppercase; }}
-            .card span {{ font-size: 20px; font-weight: bold; }}
-            table {{ width: 100%; border-collapse: collapse; margin-top: 20px; }}
-            th {{ background: {AZUL_MC}; color: white; padding: 12px; text-align: left; }}
-            td {{ padding: 10px; border-bottom: 1px solid #eee; font-size: 13px; }}
-            tr:nth-child(even) {{ background: #f1f5f9; }}
-            .footer {{ margin-top: 40px; font-size: 10px; color: #94a3b8; text-align: center; }}
-            @media print {{ .no-print {{ display: none; }} body {{ margin: 10px; }} }}
+            body {{ font-family: 'Segoe UI', Arial, sans-serif; margin: 40px; background-color: #f4f7f6; }}
+            .no-print {{ position: sticky; top: 0; background: white; padding: 10px; text-align: right; border-bottom: 1px solid #ddd; margin-bottom: 20px; z-index: 1000; }}
+            .btn-print {{ background: {AZUL_MC}; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }}
+            .header {{ background: white; padding: 20px; border-left: 8px solid {AZUL_MC}; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }}
+            .title {{ color: {AZUL_MC}; font-size: 26px; font-weight: bold; margin: 0; }}
+            .kpis {{ display: flex; gap: 15px; margin: 20px 0; }}
+            .card {{ background: white; padding: 15px; border-radius: 8px; flex: 1; text-align: center; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }}
+            .card b {{ display: block; font-size: 12px; color: #64748b; text-transform: uppercase; margin-bottom: 5px; }}
+            .card span {{ font-size: 22px; font-weight: bold; }}
+            table {{ width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }}
+            th {{ background: {AZUL_MC}; color: white; padding: 15px; text-align: left; }}
+            td {{ padding: 12px; border-bottom: 1px solid #eee; font-size: 14px; color: #444; }}
+            tr:nth-child(even) {{ background: #f9fafb; }}
+            .footer {{ margin-top: 40px; font-size: 11px; color: #94a3b8; text-align: center; }}
+            @media print {{ .no-print {{ display: none !important; }} body {{ margin: 0; background: white; }} .header {{ box-shadow: none; border: 1px solid #ddd; }} }}
         </style>
     </head>
     <body>
         <div class="no-print">
-            <button class="btn-print" onclick="window.print()">🖨️ IMPRIMIR RELATÓRIO / SALVAR PDF</button>
+            <button class="btn-print" onclick="window.print()">🖨️ IMPRIMIR PARA PDF / PAPEL</button>
         </div>
         <div class="header">
-            <div class="title">Ficha Técnica: {m['name']}</div>
-            <div style="color: #64748b;">Competência: {periodo} | MultCaixa</div>
+            <h1 class="title">{m['name']}</h1>
+            <div style="margin-top:5px; color:#666;">Relatório de Manutenção Industrial | Competência: {periodo}</div>
         </div>
         <div class="kpis">
             <div class="card"><b>Disponibilidade</b><span style="color:{VERDE if m['av']>90 else VERMELHO}">{m['av']:.1f}%</span></div>
@@ -56,36 +56,39 @@ def criar_html_individual(m, periodo):
             <div class="card"><b>Tempo Parado</b><span>{m['stop']} min</span></div>
         </div>
         <table>
-            <thead><tr><th>Data</th><th>Descrição do Serviço</th><th>Peças</th><th>Tempo</th></tr></thead>
-            <tbody>{eventos if eventos else '<tr><td colspan="4" style="text-align:center;">Nenhuma intercorrência registada.</td></tr>'}</tbody>
+            <thead><tr><th>Data</th><th>Problema / Serviço</th><th>Peças Trocadas</th><th>Tempo</th></tr></thead>
+            <tbody>{eventos if eventos else '<tr><td colspan="4" style="text-align:center; padding:30px;">Nenhum problema registrado no período.</td></tr>'}</tbody>
         </table>
-        <div class="footer">Gerado em {datetime.now().strftime('%d/%m/%Y %H:%M')}</div>
+        <div class="footer">MultCaixa Indústria - Gerado em {datetime.now().strftime('%d/%m/%Y %H:%M')}</div>
     </body>
     </html>"""
 
 def run():
-    # Garante que o script usa a pasta onde ele está localizado
-    base_dir = Path(__file__).parent.absolute()
-    os.chdir(base_dir)
+    # DETERMINA A PASTA ONDE O SCRIPT ESTÁ REALMENTE SALVO
+    pasta_script = Path(os.path.abspath(os.path.dirname(sys.argv[0])))
+    os.chdir(pasta_script)
     
-    # 1. Localizar Planilha
-    planilhas = list(base_dir.glob('*.xlsx'))
+    print(f"🚀 Iniciando em: {pasta_script}")
+
+    # 1. Encontrar a planilha
+    planilhas = list(pasta_script.glob('*.xlsx'))
     if not planilhas:
-        print("❌ Ficheiro .xlsx não encontrado!")
+        print("❌ ERRO: Nenhuma planilha .xlsx encontrada nesta pasta!")
+        input("\nPressione Enter para sair...")
         return
     
-    planilha_path = planilhas[0]
-    print(f"📊 A ler: {planilha_path.name}")
+    caminho_xlsx = planilhas[0]
+    print(f"📊 Processando planilha: {caminho_xlsx.name}")
 
     try:
-        # 2. Criar pasta de relatórios
-        pasta_relatorios = base_dir / "relatorios_individuais"
+        # 2. Criar a pasta de relatórios (forçado)
+        pasta_relatorios = pasta_script / "relatorios_individuais"
         if not pasta_relatorios.exists():
-            pasta_relatorios.mkdir(parents=True)
-            print("📁 Pasta 'relatorios_individuais' criada.")
+            os.makedirs(pasta_relatorios, exist_ok=True)
+            print("📁 Pasta de relatórios criada!")
 
-        xls = pd.ExcelFile(planilha_path)
-        machines_data = []
+        xls = pd.ExcelFile(caminho_xlsx)
+        maquinas_processadas = 0
 
         for sheet in xls.sheet_names:
             if "Resina" not in sheet and "Gel Coat" not in sheet: continue
@@ -111,30 +114,36 @@ def run():
                     'tempo': tempo_val
                 })
                 
-                if desc.upper() != 'OK' and desc != '':
+                if desc.upper() != 'OK' and desc != '' and desc.upper() != 'NAN':
                     m_stop += tempo_val
                     m_count += 1
 
             dispo = ((13200 - m_stop) / 13200) * 100
             m_dados = {'name': sheet, 'av': dispo, 'stop': m_stop, 'count': m_count, 'events': m_events}
-            machines_data.append(m_dados)
 
-            # Gravar o Ficheiro HTML Individual
-            nome_arq = f"Relatorio_{sheet.replace(' ','_')}.html"
-            with open(pasta_relatorios / nome_arq, "w", encoding="utf-8") as f:
-                f.write(criar_html_individual(m_dados, planilha_path.stem))
+            # SALVAR HTML
+            nome_arquivo = f"Relatorio_{sheet.replace(' ','_')}.html"
+            caminho_final = pasta_relatorios / nome_arquivo
+            
+            with open(caminho_final, "w", encoding="utf-8") as f:
+                f.write(criar_html_individual(m_dados, caminho_xlsx.stem))
+            
+            maquinas_processadas += 1
 
-        print(f"✅ {len(machines_data)} relatórios individuais prontos na pasta!")
+        print(f"✅ Sucesso! {maquinas_processadas} relatórios gerados em 'relatorios_individuais'.")
 
-        # 3. Atualizar o Dashboard Principal (index.html)
-        # (Aqui o script mantém a sua função original de push para o Git)
-        subprocess.run(['git', 'add', '.'], shell=True)
-        subprocess.run(['git', 'commit', '-m', 'Relatorios e Dashboard Atualizados'], shell=True)
-        subprocess.run(['git', 'push'], shell=True)
-        print("🚀 GitHub atualizado!")
-
+        # 3. GitHub (Silencioso se falhar)
+        print("📤 Sincronizando GitHub...")
+        subprocess.run('git add .', shell=True)
+        subprocess.run(f'git commit -m "Auto-update {datetime.now().strftime("%H:%M")}"', shell=True)
+        subprocess.run('git push', shell=True)
+        
+        print("\n✨ TUDO PRONTO!")
+        
     except Exception as e:
-        print(f"❌ Erro: {e}")
+        print(f"❌ OCORREU UM ERRO: {e}")
+    
+    input("\nPressione Enter para fechar...")
 
 if __name__ == "__main__":
     run()
