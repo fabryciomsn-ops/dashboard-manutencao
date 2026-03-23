@@ -184,6 +184,60 @@
   .footer{text-align:center;padding:12px;font-size:10px;color:var(--muted);font-family:'Source Code Pro',monospace;letter-spacing:1px;border-top:1px solid var(--border);margin-top:4px;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
+  /* ── MODAL RELATÓRIO ── */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;backdrop-filter:blur(4px);animation:fadeIn .2s ease;}
+  .modal-overlay.open{display:flex;align-items:center;justify-content:center;}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .modal-box{background:#0d1420;border:1px solid rgba(0,212,255,.25);border-radius:12px;width:min(560px,96vw);max-height:92vh;overflow-y:auto;position:relative;box-shadow:0 0 60px rgba(0,212,255,.08),0 24px 64px rgba(0,0,0,.5);animation:slideUp .25s ease;}
+  @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  .modal-box::-webkit-scrollbar{width:4px;}.modal-box::-webkit-scrollbar-thumb{background:rgba(0,212,255,.2);border-radius:2px;}
+  .modal-hdr{padding:20px 22px 16px;border-bottom:1px solid rgba(0,212,255,.12);position:sticky;top:0;background:#0d1420;z-index:10;}
+  .modal-hdr::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);}
+  .modal-title{font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:3px;}
+  .modal-sub{font-size:11px;color:var(--muted);font-family:'Source Code Pro',monospace;}
+  .modal-close{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;}
+  .modal-close:hover{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:var(--danger);}
+  .modal-body{padding:18px 22px;}
+  .modal-period{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px;background:rgba(0,212,255,.03);border:1px solid rgba(0,212,255,.1);border-radius:8px;padding:12px 14px;}
+  .mp-label{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-family:'Source Code Pro',monospace;}
+  .modal-actions{display:flex;gap:8px;margin-top:16px;justify-content:flex-end;}
+  .btn-print{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,rgba(0,212,255,.15),rgba(0,212,255,.08));border:1px solid rgba(0,212,255,.35);color:var(--accent);padding:9px 20px;border-radius:7px;font-size:12px;font-family:'Rajdhani',sans-serif;font-weight:600;cursor:pointer;letter-spacing:1px;transition:all .25s;}
+  .btn-print:hover{background:linear-gradient(135deg,rgba(0,212,255,.25),rgba(0,212,255,.15));box-shadow:0 0 20px rgba(0,212,255,.2);}
+  .btn-cancel{display:inline-flex;align-items:center;gap:7px;background:rgba(100,116,139,.08);border:1px solid rgba(100,116,139,.2);color:var(--muted);padding:9px 16px;border-radius:7px;font-size:12px;font-family:'Rajdhani',sans-serif;cursor:pointer;letter-spacing:1px;transition:all .2s;}
+  .btn-cancel:hover{background:rgba(100,116,139,.15);color:var(--text);}
+  .modal-preview{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:14px;font-size:11px;font-family:'Source Code Pro',monospace;color:var(--muted);}
+  .modal-preview b{color:var(--text);}
+  .mp-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.03);}
+  .mp-row:last-child{border-bottom:none;}
+  .mp-k{color:var(--muted);}
+  .mp-v{color:var(--accent);font-weight:600;}
+  .mp-v.warn{color:var(--warn);}
+  .mp-v.danger{color:var(--danger);}
+  .mp-v.ok{color:var(--accent3);}
+
+  /* Botão de relatório nos cards */
+  .mcard-footer{display:flex;justify-content:flex-end;margin-top:8px;padding-top:7px;border-top:1px solid rgba(255,255,255,.05);}
+  .btn-rpt{display:inline-flex;align-items:center;gap:5px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.18);color:rgba(0,212,255,.7);padding:4px 10px;border-radius:5px;font-size:10px;font-family:'Source Code Pro',monospace;cursor:pointer;letter-spacing:1px;transition:all .2s;}
+  .btn-rpt:hover{background:rgba(0,212,255,.14);color:var(--accent);border-color:rgba(0,212,255,.35);}
+
+  /* ── IMPRESSÃO ── */
+  @media print {
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    body { background: #fff !important; color: #111 !important; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+    .no-print { display: none !important; }
+    .print-report { display: block !important; }
+    @page { margin: 15mm 12mm; size: A4; }
+  }
+  .print-report { display: none; }
+
+  @media print {
+    /* Reset dark theme for print */
+    .rpt-wrap { background: #fff; color: #111; }
+    .rpt-header { background: linear-gradient(135deg, #1a237e, #0d47a1); color: #fff; padding: 20px 24px 16px; border-radius: 0; margin-bottom: 0; }
+    .rpt-body { padding: 16px 0; }
+    .rpt-section { page-break-inside: avoid; }
+  }
+
   /* ── RESPONSIVO MOBILE ── */
   @media (max-width: 768px) {
     .wrap{padding:10px 12px;}
@@ -405,26 +459,227 @@
   </div>
 </div>
 
+<!-- ── MODAL RELATÓRIO ── -->
+<div class="modal-overlay no-print" id="rptModal">
+  <div class="modal-box">
+    <div class="modal-hdr">
+      <div class="modal-title" id="rptModalTitle">📄 Relatório da Máquina</div>
+      <div class="modal-sub" id="rptModalSub">Configure o período e gere o relatório</div>
+      <div class="modal-close" onclick="closeRptModal()">✕</div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-period">
+        <span class="mp-label">Período</span>
+        <input type="date" id="rptFrom" class="finput" onchange="updateRptPreview()">
+        <span class="fsep">→</span>
+        <input type="date" id="rptTo" class="finput" onchange="updateRptPreview()">
+        <div style="display:flex;gap:6px;margin-left:auto;flex-wrap:wrap;">
+          <div class="chip" onclick="setRptPeriod('all')">Todo período</div>
+          <div class="chip" onclick="setRptPeriod('month')">Mês atual</div>
+          <div class="chip" onclick="setRptPeriod('30')">30 dias</div>
+          <div class="chip" onclick="setRptPeriod('14')">14 dias</div>
+        </div>
+      </div>
+      <div class="modal-preview" id="rptPreview">Selecione o período para visualizar o resumo.</div>
+      <div class="modal-actions">
+        <div class="btn-cancel" onclick="closeRptModal()">Cancelar</div>
+        <div class="btn-print" onclick="printMachineReport()">🖨️ Imprimir / Salvar PDF</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ÁREA DE IMPRESSÃO ── -->
+<div class="print-report" id="printArea"></div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     MÓDULO DE COMPRESSORES
+     ══════════════════════════════════════════════════════════════ -->
+<style>
+/* ── COMPRESSOR MODULE STYLES ── */
+.comp-wrap{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding:0 24px 32px;}
+.comp-divider{display:flex;align-items:center;gap:14px;margin:28px 0 22px;}
+.comp-divider::before,.comp-divider::after{content:'';flex:1;height:1px;}
+.comp-divider::before{background:linear-gradient(90deg,transparent,rgba(255,107,53,.5));}
+.comp-divider::after{background:linear-gradient(90deg,rgba(255,107,53,.5),transparent);}
+.comp-divider-inner{display:flex;align-items:center;gap:10px;padding:7px 20px;background:rgba(255,107,53,.07);border:1px solid rgba(255,107,53,.25);border-radius:20px;white-space:nowrap;}
+.comp-divider-inner span{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent2);font-family:'Source Code Pro',monospace;}
+
+/* Header compressores */
+.comp-hdr{background:linear-gradient(135deg,rgba(255,107,53,.07),rgba(255,180,0,.04));border:1px solid rgba(255,107,53,.2);border-radius:8px;padding:18px 26px;margin-bottom:16px;position:relative;overflow:hidden;}
+.comp-hdr::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent2),#fbbf24,transparent);}
+.comp-hdr-grid{display:grid;grid-template-columns:1fr auto;align-items:center;gap:20px;}
+.comp-hdr-title{font-size:22px;font-weight:700;letter-spacing:2px;color:var(--accent2);}
+.comp-hdr-sub{font-size:11px;color:var(--muted);font-family:'Source Code Pro',monospace;margin-top:4px;}
+.comp-hdr-badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
+.comp-badge{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:600;font-family:'Source Code Pro',monospace;border:1px solid;}
+
+/* KPIs compressores */
+.comp-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.comp-kcard{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:15px;position:relative;overflow:hidden;transition:transform .2s,border-color .2s;}
+.comp-kcard:hover{transform:translateY(-2px);border-color:rgba(255,107,53,.3);}
+.comp-kcard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent2),transparent);}
+.comp-kcard.gr::after{background:linear-gradient(90deg,var(--accent3),transparent);}
+.comp-kcard.ye::after{background:linear-gradient(90deg,var(--warn),transparent);}
+.comp-kcard.rd::after{background:linear-gradient(90deg,var(--danger),transparent);}
+.comp-klbl{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-family:'Source Code Pro',monospace;margin-bottom:5px;}
+.comp-kval{font-size:30px;font-weight:700;color:var(--accent2);}
+.comp-kcard.gr .comp-kval{color:var(--accent3);}
+.comp-kcard.ye .comp-kval{color:var(--warn);}
+.comp-kcard.rd .comp-kval{color:var(--danger);}
+.comp-ksub{font-size:11px;color:var(--muted);margin-top:2px;}
+.comp-kico{position:absolute;top:13px;right:13px;font-size:22px;opacity:.1;}
+
+/* Cards individuais dos compressores */
+.comp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:16px;}
+.comp-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .2s,box-shadow .2s;}
+.comp-card:hover{border-color:rgba(255,107,53,.3);box-shadow:0 0 20px rgba(255,107,53,.07);}
+.comp-card-header{padding:14px 18px;background:linear-gradient(135deg,rgba(255,107,53,.08),rgba(255,180,0,.04));border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.comp-card-name{font-size:15px;font-weight:700;letter-spacing:1px;color:var(--accent2);}
+.comp-card-model{font-size:10px;color:var(--muted);font-family:'Source Code Pro',monospace;margin-top:2px;}
+.comp-card-status{display:flex;align-items:center;gap:6px;font-size:11px;font-family:'Source Code Pro',monospace;padding:3px 10px;border-radius:12px;border:1px solid;}
+.comp-card-body{padding:14px 18px;}
+
+/* Horímetro e próximas manutenções */
+.comp-horimeter{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:10px 14px;background:rgba(255,255,255,.02);border-radius:6px;border:1px solid var(--border);}
+.comp-hor-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-family:'Source Code Pro',monospace;}
+.comp-hor-val{font-size:22px;font-weight:700;color:var(--accent2);font-family:'Source Code Pro',monospace;}
+.comp-hor-unit{font-size:10px;color:var(--muted);}
+
+/* Barra de progresso de manutenção */
+.comp-maint-list{display:flex;flex-direction:column;gap:9px;margin-bottom:12px;}
+.comp-maint-item{display:flex;flex-direction:column;gap:4px;}
+.comp-maint-top{display:flex;justify-content:space-between;align-items:center;}
+.comp-maint-name{font-size:11px;color:var(--text);font-weight:600;}
+.comp-maint-info{font-size:10px;font-family:'Source Code Pro',monospace;}
+.comp-maint-bar-wrap{height:6px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;}
+.comp-maint-bar{height:100%;border-radius:3px;transition:width .7s ease;}
+
+/* Tabela de histórico do compressor */
+.comp-hist-panel{background:var(--panel);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px;}
+.comp-hist-header{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.comp-hist-title{font-size:13px;font-weight:600;letter-spacing:1px;}
+.comp-hist-scroll{max-height:280px;overflow-y:auto;}
+.comp-hist-scroll::-webkit-scrollbar{width:3px;}
+.comp-hist-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.comp-table{width:100%;border-collapse:collapse;}
+.comp-table thead th{padding:8px 12px;background:rgba(255,255,255,.03);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-align:left;font-family:'Source Code Pro',monospace;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:2;}
+.comp-table tbody tr{border-bottom:1px solid rgba(255,255,255,.03);transition:background .15s;}
+.comp-table tbody tr:hover{background:rgba(255,107,53,.04);}
+.comp-table tbody td{padding:8px 12px;font-size:12px;}
+
+/* Input form para registrar leitura diária */
+.comp-input-section{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px;}
+.comp-input-title{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent2);margin-bottom:14px;font-family:'Source Code Pro',monospace;}
+.comp-input-grid{display:grid;grid-template-columns:repeat(4,1fr) auto;gap:10px;align-items:end;}
+.comp-input-field{display:flex;flex-direction:column;gap:5px;}
+.comp-input-label{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-family:'Source Code Pro',monospace;}
+.comp-input-el{background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:5px;font-family:'Source Code Pro',monospace;font-size:12px;outline:none;transition:border-color .2s;color-scheme:dark;width:100%;}
+.comp-input-el:focus{border-color:rgba(255,107,53,.5);}
+.comp-input-el[type="number"]::-webkit-inner-spin-button{opacity:.5;}
+.comp-save-btn{background:rgba(255,107,53,.12);border:1px solid rgba(255,107,53,.35);color:var(--accent2);padding:8px 20px;border-radius:5px;font-size:12px;font-family:'Source Code Pro',monospace;cursor:pointer;letter-spacing:1px;transition:all .2s;white-space:nowrap;}
+.comp-save-btn:hover{background:rgba(255,107,53,.22);box-shadow:0 0 14px rgba(255,107,53,.2);}
+
+/* Modal de relatório compressor */
+.comp-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1100;backdrop-filter:blur(5px);}
+.comp-modal-overlay.open{display:flex;align-items:center;justify-content:center;}
+.comp-modal-box{background:#0d1420;border:1px solid rgba(255,107,53,.3);border-radius:12px;width:min(640px,96vw);max-height:92vh;overflow-y:auto;position:relative;box-shadow:0 0 60px rgba(255,107,53,.1),0 24px 64px rgba(0,0,0,.6);animation:slideUp .25s ease;}
+.comp-modal-hdr{padding:20px 22px 16px;border-bottom:1px solid rgba(255,107,53,.15);position:sticky;top:0;background:#0d1420;z-index:10;}
+.comp-modal-hdr::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent2),#fbbf24,transparent);}
+.comp-modal-title{font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent2);margin-bottom:3px;}
+.comp-modal-sub{font-size:11px;color:var(--muted);font-family:'Source Code Pro',monospace;}
+.comp-modal-close{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;}
+.comp-modal-close:hover{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:var(--danger);}
+.comp-modal-body{padding:18px 22px;}
+.comp-modal-period{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.comp-modal-preview{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:14px;min-height:72px;}
+.comp-mp-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.comp-mp-row:last-child{border-bottom:none;}
+.comp-mp-k{font-size:11px;color:var(--muted);font-family:'Source Code Pro',monospace;}
+.comp-mp-v{font-size:12px;font-weight:600;font-family:'Source Code Pro',monospace;}
+.comp-mp-v.ok{color:var(--accent3);}
+.comp-mp-v.warn{color:var(--warn);}
+.comp-mp-v.danger{color:var(--danger);}
+.comp-modal-actions{display:flex;gap:8px;justify-content:flex-end;}
+.comp-btn-cancel{padding:8px 18px;border-radius:5px;font-size:12px;font-family:'Source Code Pro',monospace;cursor:pointer;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--muted);transition:all .2s;}
+.comp-btn-cancel:hover{color:var(--text);}
+.comp-btn-print{padding:8px 20px;border-radius:5px;font-size:12px;font-family:'Source Code Pro',monospace;cursor:pointer;background:rgba(255,107,53,.12);border:1px solid rgba(255,107,53,.35);color:var(--accent2);transition:all .2s;}
+.comp-btn-print:hover{background:rgba(255,107,53,.22);}
+.comp-mcard-footer{margin-top:10px;padding-top:9px;border-top:1px solid var(--border);display:flex;gap:7px;}
+.comp-btn-rpt{flex:1;padding:6px 0;border-radius:4px;font-size:10px;font-family:'Source Code Pro',monospace;cursor:pointer;background:rgba(255,107,53,.07);border:1px solid rgba(255,107,53,.2);color:var(--accent2);text-align:center;transition:all .2s;letter-spacing:1px;}
+.comp-btn-rpt:hover{background:rgba(255,107,53,.16);}
+
+/* Alert próxima manutenção */
+.comp-alert{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:5px;font-size:11px;font-family:'Source Code Pro',monospace;margin-bottom:6px;}
+.comp-alert.ok{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2);color:var(--accent3);}
+.comp-alert.warn{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.22);color:var(--warn);}
+.comp-alert.danger{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.22);color:var(--danger);}
+
+@media(max-width:900px){
+  .comp-grid{grid-template-columns:1fr;}
+  .comp-kpi-row{grid-template-columns:1fr 1fr;}
+  .comp-input-grid{grid-template-columns:1fr 1fr;}
+}
+@media print{
+  .comp-wrap,.comp-modal-overlay{display:none!important;}
+}
+</style>
+
+<!-- MODAL RELATÓRIO COMPRESSOR -->
+<div class="comp-modal-overlay no-print" id="compRptModal">
+  <div class="comp-modal-box">
+    <div class="comp-modal-hdr">
+      <div class="comp-modal-title" id="compRptTitle">🖨️ Relatório do Compressor</div>
+      <div class="comp-modal-sub" id="compRptSub">Configure o período</div>
+      <div class="comp-modal-close" onclick="closeCompModal()">✕</div>
+    </div>
+    <div class="comp-modal-body">
+      <div class="comp-modal-period">
+        <span class="comp-mp-k">Período</span>
+        <input type="date" id="compRptFrom" class="finput" onchange="updateCompPreview()">
+        <span class="fsep">→</span>
+        <input type="date" id="compRptTo" class="finput" onchange="updateCompPreview()">
+        <div style="display:flex;gap:6px;margin-left:auto;flex-wrap:wrap;">
+          <div class="chip" onclick="setCompPeriod('all')">Todo período</div>
+          <div class="chip" onclick="setCompPeriod('30')">30 dias</div>
+          <div class="chip" onclick="setCompPeriod('month')">Mês atual</div>
+        </div>
+      </div>
+      <div class="comp-modal-preview" id="compRptPreview">Selecione o período para visualizar o resumo.</div>
+      <div class="comp-modal-actions">
+        <div class="comp-btn-cancel" onclick="closeCompModal()">Cancelar</div>
+        <div class="comp-btn-print" onclick="printCompReport()">🖨️ Imprimir / Salvar PDF</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 const DCOLS=['#00d4ff','#ef4444','#f59e0b','#8b5cf6','#22c55e','#f472b6','#34d399','#fb923c'];
 let _all=[], _selM=new Set(), _selO=new Set();
 
-// ── DADOS: Fichário técnico de máquinas (Caixas).xlsx · Atualizado em 20/03/2026 10:52 ──
-const DEFAULT_DATA = [{"name": "Resina 1 - Pedro", "operator": "Pedro", "records": [{"date": "16/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "17/02/2026", "problem": "Troca da base da esfera", "partsRaw": "Base da esfera", "partsArr": ["Base da esfera"], "timeMin": 20, "isOk": false, "operator": "Pedro"}, {"date": "18/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "19/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "20/02/2026", "problem": "Anel Trava da pistola", "partsRaw": "Anel trava", "partsArr": ["Anel trava"], "timeMin": 2, "isOk": false, "operator": "Pedro"}, {"date": "23/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "24/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "25/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "26/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "27/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "02/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "03/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "04/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "05/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "06/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "09/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "10/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "11/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "12/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "13/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "14/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "16/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "17/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "18/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}, {"date": "19/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Pedro"}]}, {"name": "Resina 2 - Neto", "operator": "Neto", "records": [{"date": "16/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Neto"}, {"date": "17/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Neto"}, {"date": "18/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Neto"}, {"date": "19/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Neto"}, {"date": "20/02/2026", "problem": "troca de anel trava e anel ouring", "partsRaw": "Anel trava, anel ouring do bujão", "partsArr": ["Anel trava", "anel ouring do bujão"], "timeMin": 7, "isOk": false, "operator": "Neto"}, {"date": "23/02/2026", "problem": "Manutenção da turbina do motor", "partsRaw": "", "partsArr": [], "timeMin": 30, "isOk": false, "operator": "Neto"}, {"date": "24/02/2026", "problem": "Troca de bucha do bico da pistola e troca da turbina do motor", "partsRaw": "Turbina do motor, bucha do bico da pistola", "partsArr": ["Turbina do motor", "bucha do bico da pistola"], "timeMin": 50, "isOk": false, "operator": "Neto"}, {"date": "25/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Neto"}, {"date": "26/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Neto"}, {"date": "27/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Neto"}, {"date": "02/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Neto"}, {"date": "03/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Neto"}, {"date": "04/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Neto"}, {"date": "05/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Neto"}, {"date": "06/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Neto"}, {"date": "09/03/2026", "problem": "Manutenção na válvula 5 vias", "partsRaw": "", "partsArr": [], "timeMin": 60, "isOk": false, "operator": "Neto"}, {"date": "10/03/2026", "problem": "Troca de oring da agulha da resina", "partsRaw": "", "partsArr": [], "timeMin": 10, "isOk": false, "operator": "Neto"}, {"date": "11/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Neto"}, {"date": "12/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Neto"}, {"date": "13/03/2026", "problem": "Manutenção e troca do raspador", "partsRaw": "Raspador", "partsArr": ["Raspador"], "timeMin": 56, "isOk": false, "operator": "Neto"}, {"date": "14/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Neto"}, {"date": "16/03/2026", "problem": "Manutenção na turbina", "partsRaw": "", "partsArr": [], "timeMin": 10, "isOk": false, "operator": "Neto"}, {"date": "17/03/2026", "problem": "Manutenção na turbina", "partsRaw": "", "partsArr": [], "timeMin": 40, "isOk": false, "operator": "Neto"}, {"date": "18/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Neto"}, {"date": "19/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Neto"}]}, {"name": "Resina 3 - Antonio José", "operator": "Antonio José", "records": [{"date": "16/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "17/02/2026", "problem": "Troca de camisa e raspador", "partsRaw": "Camisa e Raspador", "partsArr": ["Camisa", "Raspador"], "timeMin": 85, "isOk": false, "operator": "Antonio José"}, {"date": "18/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "19/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "20/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "23/02/2026", "problem": "Revisão na bomba do Mek, sujeira na pistola no mek", "partsRaw": "Ouring da vareta do mek", "partsArr": ["Ouring da vareta do mek"], "timeMin": 35, "isOk": false, "operator": "Antonio José"}, {"date": "24/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "25/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "26/02/2026", "problem": "Troca de Ouring", "partsRaw": "Ouring", "partsArr": ["Ouring"], "timeMin": 10, "isOk": false, "operator": "Antonio José"}, {"date": "27/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "28/02/2026", "problem": "Manutenção geral  e troca de retentor, no sábado sem expediente de produção", "partsRaw": "Retentor", "partsArr": ["Retentor"], "timeMin": 0, "isOk": false, "operator": "Antonio José"}, {"date": "02/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "03/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "04/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "05/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "06/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "09/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "10/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "11/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "12/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "13/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "14/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "16/03/2026", "problem": "Manutenção do limite", "partsRaw": "", "partsArr": [], "timeMin": 15, "isOk": false, "operator": "Antonio José"}, {"date": "17/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "18/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}, {"date": "19/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Antonio José"}]}, {"name": "Gel Coat 1 - PC", "operator": "PC", "records": [{"date": "16/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "17/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "18/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "19/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "20/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "23/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "24/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "25/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "26/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "27/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "28/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "02/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "03/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "04/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "05/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "06/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "09/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "10/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "11/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "12/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "13/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "14/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "16/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "17/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}, {"date": "18/03/2026", "problem": "Entrada de ar na mangueira de gel e manutenção", "partsRaw": "Mangueira do pescador", "partsArr": ["Mangueira do pescador"], "timeMin": 60, "isOk": false, "operator": "PC"}, {"date": "19/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "PC"}]}, {"name": "Gel Coat 2 - Dionísio", "operator": "Dionísio", "records": [{"date": "16/02/2026", "problem": "Raspador ruim, efetuou a troca.", "partsRaw": "Raspador", "partsArr": ["Raspador"], "timeMin": 25, "isOk": false, "operator": "Dionísio"}, {"date": "17/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Dionísio"}, {"date": "18/02/2026", "problem": "Vasamento de Gel na pistola / sujeira na pistola. Trocou ouring e fez limpeza", "partsRaw": "Ouring", "partsArr": ["Ouring"], "timeMin": 25, "isOk": false, "operator": "Dionísio"}, {"date": "19/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Dionísio"}, {"date": "20/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Dionísio"}, {"date": "23/02/2026", "problem": "Mangueira do Mek vazando. Efetuou o reparo na mangueira.", "partsRaw": "", "partsArr": [], "timeMin": 20, "isOk": false, "operator": "Dionísio"}, {"date": "24/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Dionísio"}, {"date": "25/02/2026", "problem": "Mangueira do Mek vazando. Efetuou o reparo na mangueira.", "partsRaw": "", "partsArr": [], "timeMin": 10, "isOk": false, "operator": "Dionísio"}, {"date": "26/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Dionísio"}, {"date": "27/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Dionísio"}, {"date": "02/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Dionísio"}, {"date": "03/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Dionísio"}, {"date": "04/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Dionísio"}, {"date": "05/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Dionísio"}, {"date": "06/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Dionísio"}, {"date": "09/03/2026", "problem": "Sujeira na mangueira de gel. Probelma na base da esfera agulha", "partsRaw": "Base esfera agulha", "partsArr": ["Base esfera agulha"], "timeMin": 35, "isOk": false, "operator": "Dionísio"}, {"date": "10/03/2026", "problem": "Reparo na mangueira do mek e sujeira na mangueira do gel", "partsRaw": "", "partsArr": [], "timeMin": 20, "isOk": false, "operator": "Dionísio"}, {"date": "11/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Dionísio"}, {"date": "12/03/2026", "problem": "Troca da mangueira do mek", "partsRaw": "Mangueira do mek", "partsArr": ["Mangueira do mek"], "timeMin": 16, "isOk": false, "operator": "Dionísio"}, {"date": "13/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Dionísio"}, {"date": "14/03/2026", "problem": "Manutenção na mangueira do mek", "partsRaw": "", "partsArr": [], "timeMin": 20, "isOk": false, "operator": "Dionísio"}, {"date": "16/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Dionísio"}, {"date": "17/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Dionísio"}, {"date": "18/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Dionísio"}, {"date": "19/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Dionísio"}]}, {"name": "Gel Coat 3 - Evandro", "operator": "Evandro", "records": [{"date": "16/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "17/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "18/02/2026", "problem": "Entupimento da pistola. Fez o processo para desentupir.", "partsRaw": "", "partsArr": [], "timeMin": 20, "isOk": false, "operator": "Evandro"}, {"date": "19/02/2026", "problem": "Troca da válvula esfera do mek", "partsRaw": "válvula esfera", "partsArr": ["válvula esfera"], "timeMin": 11, "isOk": false, "operator": "Evandro"}, {"date": "20/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "23/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "24/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "25/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "26/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "27/02/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "02/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "03/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "04/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "05/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "06/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "09/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "10/03/2026", "problem": "Trca de oring da vareta do mek", "partsRaw": "Oring da vareta do mek", "partsArr": ["Oring da vareta do mek"], "timeMin": 5, "isOk": false, "operator": "Evandro"}, {"date": "11/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "12/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "13/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "14/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "16/03/2026", "problem": "Troca do raspador", "partsRaw": "Raspador", "partsArr": ["Raspador"], "timeMin": 20, "isOk": false, "operator": "Evandro"}, {"date": "17/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "18/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}, {"date": "19/03/2026", "problem": "OK", "partsRaw": "OK", "partsArr": [], "timeMin": 0, "isOk": true, "operator": "Evandro"}]}]
-
-// drag & drop
-const dz=document.getElementById('dropzone');
-dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over');});
-dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
-dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');handleFile(e.dataTransfer.files[0]);});
-
+// ── DADOS: Fichário técnico de máquinas (Caixas).xlsx · Atualizado em 23/03/2026 00:18 ──
+/* Atualizado em 23/03/2026 00:18 via script */
+const DEFAULT_DATA = [{"name":"Resina 1 - Pedro","operator":"Pedro","records":[{"date":"16/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"17/02/2026","problem":"Troca da base da esfera","partsRaw":"Base da esfera","partsArr":["Base da esfera"],"timeMin":20,"isOk":false,"operator":"Pedro"},{"date":"18/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"19/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"20/02/2026","problem":"Anel Trava da pistola","partsRaw":"Anel trava","partsArr":["Anel trava"],"timeMin":2,"isOk":false,"operator":"Pedro"},{"date":"23/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"24/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"25/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"26/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"27/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"02/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"03/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"04/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"05/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"06/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"09/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"10/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"11/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"12/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"13/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"14/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"16/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"17/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"18/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"19/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"}]},{"name":"Resina 2 - Neto","operator":"Neto","records":[{"date":"16/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"17/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"18/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"19/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"20/02/2026","problem":"troca de anel trava e anel ouring","partsRaw":"Anel trava, anel ouring do bujão","partsArr":["Anel trava","anel ouring do bujão"],"timeMin":7,"isOk":false,"operator":"Neto"},{"date":"23/02/2026","problem":"Manutenção da turbina do motor","partsRaw":"","partsArr":[],"timeMin":30,"isOk":false,"operator":"Neto"},{"date":"24/02/2026","problem":"Troca de bucha do bico da pistola e troca da turbina do motor","partsRaw":"Turbina do motor, bucha do bico da pistola","partsArr":["Turbina do motor","bucha do bico da pistola"],"timeMin":50,"isOk":false,"operator":"Neto"},{"date":"25/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"26/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"27/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"02/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"03/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"04/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"05/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"06/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"09/03/2026","problem":"Manutenção na válvula 5 vias","partsRaw":"","partsArr":[],"timeMin":60,"isOk":false,"operator":"Neto"},{"date":"10/03/2026","problem":"Troca de oring da agulha da resina","partsRaw":"","partsArr":[],"timeMin":10,"isOk":false,"operator":"Neto"},{"date":"11/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"12/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"13/03/2026","problem":"Manutenção e troca do raspador","partsRaw":"Raspador","partsArr":["Raspador"],"timeMin":56,"isOk":false,"operator":"Neto"},{"date":"14/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"16/03/2026","problem":"Manutenção na turbina","partsRaw":"","partsArr":[],"timeMin":10,"isOk":false,"operator":"Neto"},{"date":"17/03/2026","problem":"Manutenção na turbina","partsRaw":"","partsArr":[],"timeMin":40,"isOk":false,"operator":"Neto"},{"date":"18/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"19/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"}]},{"name":"Resina 3 - Antonio José","operator":"Antonio José","records":[{"date":"16/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"17/02/2026","problem":"Troca de camisa e raspador","partsRaw":"Camisa e Raspador","partsArr":["Camisa","Raspador"],"timeMin":85,"isOk":false,"operator":"Antonio José"},{"date":"18/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"19/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"20/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"23/02/2026","problem":"Revisão na bomba do Mek, sujeira na pistola no mek","partsRaw":"Ouring da vareta do mek","partsArr":["Ouring da vareta do mek"],"timeMin":35,"isOk":false,"operator":"Antonio José"},{"date":"24/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"25/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"26/02/2026","problem":"Troca de Ouring","partsRaw":"Ouring","partsArr":["Ouring"],"timeMin":10,"isOk":false,"operator":"Antonio José"},{"date":"27/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"28/02/2026","problem":"Manutenção geral  e troca de retentor, no sábado sem expediente de produção","partsRaw":"Retentor","partsArr":["Retentor"],"timeMin":0,"isOk":false,"operator":"Antonio José"},{"date":"02/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"03/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"04/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"05/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"06/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"09/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"10/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"11/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"12/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"13/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"14/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"16/03/2026","problem":"Manutenção do limite","partsRaw":"","partsArr":[],"timeMin":15,"isOk":false,"operator":"Antonio José"},{"date":"17/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"18/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"19/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"}]},{"name":"Gel Coat 1 - PC","operator":"PC","records":[{"date":"16/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"17/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"18/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"19/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"20/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"23/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"24/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"25/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"26/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"27/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"28/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"02/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"03/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"04/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"05/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"06/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"09/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"10/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"11/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"12/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"13/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"14/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"16/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"17/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"18/03/2026","problem":"Entrada de ar na mangueira de gel e manutenção","partsRaw":"Mangueira do pescador","partsArr":["Mangueira do pescador"],"timeMin":60,"isOk":false,"operator":"PC"},{"date":"19/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"}]},{"name":"Gel Coat 2 - Dionísio","operator":"Dionísio","records":[{"date":"16/02/2026","problem":"Raspador ruim, efetuou a troca.","partsRaw":"Raspador","partsArr":["Raspador"],"timeMin":25,"isOk":false,"operator":"Dionísio"},{"date":"17/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"18/02/2026","problem":"Vasamento de Gel na pistola / sujeira na pistola. Trocou ouring e fez limpeza","partsRaw":"Ouring","partsArr":["Ouring"],"timeMin":25,"isOk":false,"operator":"Dionísio"},{"date":"19/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"20/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"23/02/2026","problem":"Mangueira do Mek vazando. Efetuou o reparo na mangueira.","partsRaw":"","partsArr":[],"timeMin":20,"isOk":false,"operator":"Dionísio"},{"date":"24/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"25/02/2026","problem":"Mangueira do Mek vazando. Efetuou o reparo na mangueira.","partsRaw":"","partsArr":[],"timeMin":10,"isOk":false,"operator":"Dionísio"},{"date":"26/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"27/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"02/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"03/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"04/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"05/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"06/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"09/03/2026","problem":"Sujeira na mangueira de gel. Probelma na base da esfera agulha","partsRaw":"Base esfera agulha","partsArr":["Base esfera agulha"],"timeMin":35,"isOk":false,"operator":"Dionísio"},{"date":"10/03/2026","problem":"Reparo na mangueira do mek e sujeira na mangueira do gel","partsRaw":"","partsArr":[],"timeMin":20,"isOk":false,"operator":"Dionísio"},{"date":"11/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"12/03/2026","problem":"Troca da mangueira do mek","partsRaw":"Mangueira do mek","partsArr":["Mangueira do mek"],"timeMin":16,"isOk":false,"operator":"Dionísio"},{"date":"13/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"14/03/2026","problem":"Manutenção na mangueira do mek","partsRaw":"","partsArr":[],"timeMin":20,"isOk":false,"operator":"Dionísio"},{"date":"16/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"17/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"18/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"19/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"}]},{"name":"Gel Coat 3 - Evandro","operator":"Evandro","records":[{"date":"16/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"17/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"18/02/2026","problem":"Entupimento da pistola. Fez o processo para desentupir.","partsRaw":"","partsArr":[],"timeMin":20,"isOk":false,"operator":"Evandro"},{"date":"19/02/2026","problem":"Troca da válvula esfera do mek","partsRaw":"válvula esfera","partsArr":["válvula esfera"],"timeMin":11,"isOk":false,"operator":"Evandro"},{"date":"20/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"23/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"24/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"25/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"26/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"27/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"02/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"03/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"04/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"05/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"06/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"09/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"10/03/2026","problem":"Trca de oring da vareta do mek","partsRaw":"Oring da vareta do mek","partsArr":["Oring da vareta do mek"],"timeMin":5,"isOk":false,"operator":"Evandro"},{"date":"11/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"12/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"13/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"14/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"16/03/2026","problem":"Troca do raspador","partsRaw":"Raspador","partsArr":["Raspador"],"timeMin":20,"isOk":false,"operator":"Evandro"},{"date":"17/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"18/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"19/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"}]}];
 // ── AUTO-LOAD DEFAULT DATA ON PAGE OPEN ──
 window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('dropzone').style.display='none';
+  const dz=document.getElementById('dropzone');
+  dz.style.display='none';
+  dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over');});
+  dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
+  dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');handleFile(e.dataTransfer.files[0]);});
   _all = DEFAULT_DATA;
   _selM.clear(); _selO.clear();
   initFilters(); applyFilters();
 });
+
+// ── NOMES EXATOS DAS ABAS DE COMPRESSORES NA PLANILHA ──
+const COMP_SHEET_MAP = [
+  { sheetKey: 'Atlas Copco 15 HP',            idx: 0 },
+  { sheetKey: 'Schulz SRP15 (15 HP) Fibra',   idx: 1 },
+  { sheetKey: 'Schulz SRP20 (20 HP)',          idx: 2 },
+  { sheetKey: 'Schulz SRP15 (15 HP) Especiais', idx: 3 },
+];
 
 function handleFile(file){
   if(!file)return;
@@ -437,14 +692,81 @@ function handleFile(file){
   r.onload=e=>{
     try{
       const wb=XLSX.read(e.target.result,{type:'array',cellDates:true});
+      // ── 1. Máquinas Fibra ──
       _all=parseWB(wb); _selM.clear(); _selO.clear();
+      // ── 2. Compressores ──
+      const compParsed = parseCompWB(wb);
+      if(compParsed){
+        // Merge: se aba existir e tiver dados usa planilha, senão mantém localStorage
+        COMP_SHEET_MAP.forEach(({idx})=>{
+          if(compParsed[idx] && compParsed[idx].readings.length > 0){
+            _compData[idx].readings = compParsed[idx].readings;
+            // re-detect last oil change
+            const oilR = _compData[idx].readings.filter(r=>{
+              const t=(r.maint||'').toLowerCase();
+              return t.includes('óleo')||t.includes('oleo')||t.includes('oil');
+            });
+            if(oilR.length){
+              const sorted=[...oilR].sort((a,b)=>a.date.localeCompare(b.date));
+              _compData[idx].lastOilChange = sorted[sorted.length-1].hrs || 0;
+            }
+          }
+        });
+        saveCompData(_compData);
+        renderCompCards();
+        renderCompHistTable();
+      }
       initFilters(); applyFilters();
+      // Show update timestamp
+      const ts=new Date().toLocaleString('pt-BR');
+      const el=document.getElementById('hdrSub');
+      if(el) el.textContent=(el.textContent||'')+' · Planilha carregada '+ts;
     }catch(err){
-      alert('Erro: '+err.message);
+      alert('Erro ao ler planilha: '+err.message);
       document.getElementById('loading').style.display='none';
     }
   };
   r.readAsArrayBuffer(file);
+}
+
+// Parse das abas de compressores: col0=Data, col1=Horímetro, col2=Manutenção, col3=Peças
+function parseCompWB(wb){
+  const result = [{readings:[]},{readings:[]},{readings:[]},{readings:[]}];
+  COMP_SHEET_MAP.forEach(({sheetKey, idx})=>{
+    const ws = wb.Sheets[sheetKey];
+    if(!ws) return;
+    const rows = XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+    // Find header row
+    const hi = rows.findIndex(r=>String(r[0]).toUpperCase().trim()==='DATA');
+    if(hi===-1) return;
+    for(let i=hi+1;i<rows.length;i++){
+      const row=rows[i];
+      if(!row[0] && !row[1]) continue;
+      // Parse date
+      let date='';
+      if(row[0] instanceof Date){
+        date=row[0].toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
+      } else if(typeof row[0]==='number'){
+        try{const d=XLSX.SSF.parse_date_code(row[0]);date=`${String(d.d).padStart(2,'0')}/${String(d.m).padStart(2,'0')}/${d.y}`;}catch(e){date=String(row[0]);}
+      } else {
+        date=String(row[0]||'').trim();
+        if(!date) continue;
+      }
+      // Convert to ISO for sorting later
+      const hrsRaw = row[1];
+      const hrs = hrsRaw===''||hrsRaw===null||hrsRaw===undefined ? 0 : (parseInt(String(hrsRaw))||0);
+      const maint = String(row[2]||'').trim() || 'OK';
+      const parts = String(row[3]||'').trim();
+      result[idx].readings.push({date, hrs, maint, parts});
+    }
+    // Sort by date ascending
+    result[idx].readings.sort((a,b)=>{
+      const ia=a.date.includes('/')?a.date.split('/').reverse().join('-'):a.date;
+      const ib=b.date.includes('/')?b.date.split('/').reverse().join('-'):b.date;
+      return ia.localeCompare(ib);
+    });
+  });
+  return result;
 }
 
 function extractOperator(sheetName){
@@ -471,7 +793,11 @@ function splitParts(raw){
 }
 
 function parseWB(wb){
-  return wb.SheetNames.map(name=>{
+  // Abas de compressores são tratadas separadamente — ignorar aqui
+  const compSheets = new Set(COMP_SHEET_MAP.map(c=>c.sheetKey));
+  return wb.SheetNames
+    .filter(name=>!compSheets.has(name))
+    .map(name=>{
     const ws=wb.Sheets[name];
     const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
     const hi=rows.findIndex(r=>String(r[0]).toUpperCase().includes('DATA'));
@@ -621,7 +947,7 @@ function render(machines){
   const mttr=totOcc>0?totMin/totOcc:0;
   const best=[...mStats].sort((a,b)=>b.av-a.av)[0];
   const maxSTop=Math.max(...mStats.map(m=>m.fails.reduce((mx,r)=>Math.max(mx,r.timeMin),0)),0);
-  const allDates=[...new Set(machines.flatMap(m=>m.records.map(r=>r.date)))].sort();
+  const allDates=[...new Set(machines.flatMap(m=>m.records.map(r=>r.date)))].sort((a,b)=>toISO(a).localeCompare(toISO(b)));
   const period=allDates.length?`${allDates[0]} – ${allDates[allDates.length-1]}`:'';
 
   document.getElementById('periodLbl').textContent='Período: '+period;
@@ -680,7 +1006,7 @@ function render(machines){
   document.getElementById('mapLeg').textContent=machines.map((m,i)=>`${prefixes[i]}=${m.name.split(' – ')[0]}`).join(' · ');
   const dayMap={};
   machines.forEach((m,mi)=>m.records.forEach(r=>{if(!dayMap[r.date])dayMap[r.date]={};dayMap[r.date][mi]=r;}));
-  document.getElementById('timeline').innerHTML=Object.entries(dayMap).sort((a,b)=>a[0].localeCompare(b[0])).map(([date,recs])=>{
+  document.getElementById('timeline').innerHTML=Object.entries(dayMap).sort((a,b)=>toISO(a[0]).localeCompare(toISO(b[0]))).map(([date,recs])=>{
     const dots=machines.map((m,mi)=>{
       const r=recs[mi];
       if(!r)return `<div class="mdot" style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);color:var(--muted)">${prefixes[mi]}</div>`;
@@ -729,7 +1055,7 @@ function render(machines){
   }).join('');
 
   // occurrence table
-  const allOccs=machines.flatMap(m=>m.records.filter(r=>!r.isOk).map(r=>({...r,machine:m.name}))).sort((a,b)=>a.date.localeCompare(b.date));
+  const allOccs=machines.flatMap(m=>m.records.filter(r=>!r.isOk).map(r=>({...r,machine:m.name}))).sort((a,b)=>toISO(a.date).localeCompare(toISO(b.date)));
   document.getElementById('occTbl').innerHTML=allOccs.map(r=>{
     const bc=r.timeMin>=60?'b-fail':r.timeMin>=20?'b-warn':'b-ok';
     const bl=r.timeMin>=60?'CRÍTICA':r.timeMin>=20?'CORRETIVA':'RÁPIDA';
@@ -741,6 +1067,7 @@ function render(machines){
   document.getElementById('machGrid').innerHTML=mStats.map(m=>{
     const col=m.av>=97?'#22c55e':m.av>=90?'#f59e0b':'#ef4444';
     const oc=m.count===0?'#22c55e':m.count<=2?'#f59e0b':'#ef4444';
+    const idx=_all.findIndex(x=>x.name===m.name);
     return `<div class="mcard">
       <div class="mname" style="color:${col}">${m.name}</div>
       <div class="mstat"><span class="ml">Operador</span><span class="mv" style="color:var(--muted)">${m.operator}</span></div>
@@ -748,6 +1075,7 @@ function render(machines){
       <div class="mstat"><span class="ml">Parada total</span><span class="mv" style="color:${m.stop>0?'#ef4444':'#22c55e'}">${m.stop} min</span></div>
       <div class="mstat"><span class="ml">Disponib.</span><span class="mv" style="color:${col}">${m.av.toFixed(1)}%</span></div>
       <div class="mbar"><div class="mbar-f" style="width:${m.av.toFixed(1)}%;background:${col}"></div></div>
+      <div class="mcard-footer"><div class="btn-rpt" onclick="openRptModal('${m.name.replace(/'/g,"\\'")}')">📄 Relatório</div></div>
     </div>`;
   }).join('');
 
@@ -774,7 +1102,1007 @@ document.addEventListener('keydown', e => {
   if(e.key==='Escape'){
     const dz=document.getElementById('dropzone');
     if(dz.style.position==='fixed'){ dz.style.display='none'; dz.style.position=''; }
+    closeRptModal();
   }
+});
+
+// ── RELATÓRIO INDIVIDUAL ──
+let _rptMachineName = null;
+
+function openRptModal(machineName) {
+  _rptMachineName = machineName;
+  const m = _all.find(x => x.name === machineName);
+  if (!m) return;
+
+  document.getElementById('rptModalTitle').textContent = '📄 ' + machineName;
+  document.getElementById('rptModalSub').textContent = 'Operador: ' + m.operator + ' · Configure o período do relatório';
+
+  // Default: full range of this machine
+  const dates = m.records.map(r => toISO(r.date)).sort();
+  document.getElementById('rptFrom').value = dates[0] || fmtD(new Date());
+  document.getElementById('rptTo').value = dates[dates.length - 1] || fmtD(new Date());
+
+  updateRptPreview();
+  document.getElementById('rptModal').classList.add('open');
+}
+
+function closeRptModal() {
+  document.getElementById('rptModal').classList.remove('open');
+  _rptMachineName = null;
+}
+
+function setRptPeriod(key) {
+  const m = _all.find(x => x.name === _rptMachineName);
+  if (!m) return;
+  const dates = m.records.map(r => toISO(r.date)).sort();
+  const mx = dates[dates.length - 1] || fmtD(new Date());
+  const mxD = new Date(mx);
+  let from = dates[0] || fmtD(new Date());
+  if (key === '30') { const d = new Date(mxD); d.setDate(d.getDate() - 29); from = fmtD(d); }
+  if (key === '14') { const d = new Date(mxD); d.setDate(d.getDate() - 13); from = fmtD(d); }
+  if (key === 'month') { from = `${mxD.getFullYear()}-${pad(mxD.getMonth() + 1)}-01`; }
+  document.getElementById('rptFrom').value = from;
+  document.getElementById('rptTo').value = mx;
+  updateRptPreview();
+}
+
+function getRptData() {
+  const m = _all.find(x => x.name === _rptMachineName);
+  if (!m) return null;
+  const from = document.getElementById('rptFrom').value;
+  const to = document.getElementById('rptTo').value;
+  const recs = m.records.filter(r => {
+    const iso = toISO(r.date);
+    return (!from || iso >= from) && (!to || iso <= to);
+  });
+  return { ...m, records: recs };
+}
+
+function updateRptPreview() {
+  const data = getRptData();
+  if (!data) return;
+  const fails = data.records.filter(r => !r.isOk);
+  const stop = fails.reduce((s, r) => s + r.timeMin, 0);
+  const av = data.records.length > 0 ? Math.min(100, (data.records.length * 480 - stop) / (data.records.length * 480) * 100) : 100;
+  const parts = fails.flatMap(r => r.partsArr || []).filter(Boolean);
+  const pset = [...new Set(parts.map(p => p.charAt(0).toUpperCase() + p.slice(1)))];
+  const dates = data.records.map(r => r.date).sort((a,b)=>toISO(a).localeCompare(toISO(b)));
+  const period = dates.length ? dates[0] + ' → ' + dates[dates.length - 1] : '—';
+
+  const avCls = av >= 97 ? 'ok' : av >= 90 ? 'warn' : 'danger';
+  const stopCls = stop === 0 ? 'ok' : stop < 60 ? 'warn' : 'danger';
+
+  document.getElementById('rptPreview').innerHTML = `
+    <div class="mp-row"><span class="mp-k">Período</span><span class="mp-v">${period}</span></div>
+    <div class="mp-row"><span class="mp-k">Dias registrados</span><span class="mp-v">${data.records.length}</span></div>
+    <div class="mp-row"><span class="mp-k">Ocorrências</span><span class="mp-v ${fails.length > 0 ? 'warn' : 'ok'}">${fails.length}</span></div>
+    <div class="mp-row"><span class="mp-k">Parada total</span><span class="mp-v ${stopCls}">${stop} min (${(stop / 60).toFixed(1)}h)</span></div>
+    <div class="mp-row"><span class="mp-k">Disponibilidade</span><span class="mp-v ${avCls}">${av.toFixed(1)}%</span></div>
+    <div class="mp-row"><span class="mp-k">Peças trocadas</span><span class="mp-v">${pset.length > 0 ? pset.slice(0, 4).join(', ') + (pset.length > 4 ? '…' : '') : 'Nenhuma'}</span></div>
+  `;
+}
+
+function printMachineReport() {
+  const data = getRptData();
+  if (!data) return;
+  const from = document.getElementById('rptFrom').value;
+  const to = document.getElementById('rptTo').value;
+  const fails = data.records.filter(r => !r.isOk);
+  const okDays = data.records.filter(r => r.isOk);
+  const stop = fails.reduce((s, r) => s + r.timeMin, 0);
+  const av = data.records.length > 0 ? Math.min(100, (data.records.length * 480 - stop) / (data.records.length * 480) * 100) : 100;
+  const mttr = fails.length > 0 ? (stop / fails.length).toFixed(1) : '0';
+  const parts = fails.flatMap(r => r.partsArr || []).filter(Boolean);
+  const pmap = {};
+  parts.forEach(p => { const k = p.charAt(0).toUpperCase() + p.slice(1); pmap[k] = (pmap[k] || 0) + 1; });
+  const plist = Object.entries(pmap).sort((a, b) => b[1] - a[1]);
+  const dates = data.records.map(r => r.date).sort((a,b)=>toISO(a).localeCompare(toISO(b)));
+  const period = dates.length ? dates[0] + ' a ' + dates[dates.length - 1] : '—';
+  const generated = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+  const avColor = av >= 97 ? '#16a34a' : av >= 90 ? '#d97706' : '#dc2626';
+  const stopColor = stop === 0 ? '#16a34a' : stop < 60 ? '#d97706' : '#dc2626';
+
+  const occRows = fails.map(r => `
+    <tr>
+      <td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;font-size:12px;white-space:nowrap">${r.date}</td>
+      <td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;font-size:12px">${r.problem}</td>
+      <td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;font-size:12px">${r.partsRaw || '—'}</td>
+      <td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;font-size:12px;text-align:center;font-weight:700;color:${r.timeMin >= 60 ? '#dc2626' : r.timeMin >= 20 ? '#d97706' : '#16a34a'}">${r.timeMin > 0 ? r.timeMin + ' min' : '—'}</td>
+      <td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;font-size:11px;text-align:center">
+        <span style="background:${r.timeMin >= 60 ? '#fef2f2' : r.timeMin >= 20 ? '#fffbeb' : '#f0fdf4'};color:${r.timeMin >= 60 ? '#dc2626' : r.timeMin >= 20 ? '#d97706' : '#16a34a'};padding:2px 8px;border-radius:4px;font-weight:600">
+          ${r.timeMin >= 60 ? 'CRÍTICA' : r.timeMin >= 20 ? 'CORRETIVA' : 'RÁPIDA'}
+        </span>
+      </td>
+    </tr>`).join('');
+
+  const okRows = okDays.map(r => `
+    <tr>
+      <td style="padding:6px 10px;border-bottom:1px solid #f1f5f9;font-size:11px;color:#64748b">${r.date}</td>
+      <td colspan="4" style="padding:6px 10px;border-bottom:1px solid #f1f5f9;font-size:11px;color:#16a34a">✓ Operação normal</td>
+    </tr>`).join('');
+
+  const partsRows = plist.map(([nm, cnt], i) => `
+    <tr>
+      <td style="padding:6px 10px;border-bottom:1px solid #f1f5f9;font-size:12px">${i + 1}.</td>
+      <td style="padding:6px 10px;border-bottom:1px solid #f1f5f9;font-size:12px;font-weight:500">${nm}</td>
+      <td style="padding:6px 10px;border-bottom:1px solid #f1f5f9;font-size:12px;text-align:center;font-weight:700;color:#1e40af">${cnt}×</td>
+    </tr>`).join('');
+
+  // Timeline de manutenção - calendário visual
+  const calRows = data.records.map(r => {
+    const bg = r.isOk ? '#f0fdf4' : r.timeMin >= 60 ? '#fef2f2' : r.timeMin >= 20 ? '#fffbeb' : '#fff7ed';
+    const color = r.isOk ? '#16a34a' : r.timeMin >= 60 ? '#dc2626' : r.timeMin >= 20 ? '#d97706' : '#ea580c';
+    const icon = r.isOk ? '✓' : '⚠';
+    return `<div style="display:inline-flex;flex-direction:column;align-items:center;background:${bg};border:1px solid ${color}22;border-radius:5px;padding:4px 6px;margin:3px;min-width:48px;font-size:10px;">
+      <span style="font-weight:700;color:${color};font-size:13px">${icon}</span>
+      <span style="color:#64748b;font-size:9px;white-space:nowrap">${r.date.substring(0, 5)}</span>
+      ${!r.isOk ? `<span style="color:${color};font-size:9px;font-weight:600">${r.timeMin}m</span>` : ''}
+    </div>`;
+  }).join('');
+
+  const reportHTML = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Relatório – ${data.name}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', Arial, sans-serif; color: #1e293b; background: #fff; font-size: 13px; }
+  @page { margin: 14mm 12mm; size: A4; }
+  @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+
+  .cover { background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #0c4a6e 100%); color: #fff; padding: 32px 36px 28px; position: relative; overflow: hidden; margin-bottom: 24px; border-radius: 0 0 12px 12px; }
+  .cover::after { content: ''; position: absolute; bottom: -30px; right: -30px; width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,0.04); }
+  .cover-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; opacity: .6; margin-bottom: 10px; }
+  .cover-title { font-size: 28px; font-weight: 700; letter-spacing: 1px; margin-bottom: 4px; }
+  .cover-sub { font-size: 14px; opacity: .75; margin-bottom: 20px; }
+  .cover-meta { display: flex; gap: 28px; flex-wrap: wrap; }
+  .cover-item { display: flex; flex-direction: column; gap: 2px; }
+  .cover-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; opacity: .5; }
+  .cover-val { font-size: 14px; font-weight: 600; }
+  .cover-accent { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #38bdf8, #818cf8, #f472b6); }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 0 0 22px; }
+  .kpi { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px; position: relative; overflow: hidden; }
+  .kpi::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+  .kpi.blue::before { background: #3b82f6; } .kpi.green::before { background: #22c55e; }
+  .kpi.orange::before { background: #f59e0b; } .kpi.red::before { background: #ef4444; }
+  .kpi-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: #94a3b8; margin-bottom: 6px; font-weight: 500; }
+  .kpi-val { font-size: 26px; font-weight: 700; margin-bottom: 2px; }
+  .kpi-sub { font-size: 11px; color: #64748b; }
+  .kpi.blue .kpi-val { color: #2563eb; } .kpi.green .kpi-val { color: #16a34a; }
+  .kpi.orange .kpi-val { color: #d97706; } .kpi.red .kpi-val { color: #dc2626; }
+
+  .section { margin-bottom: 22px; }
+  .section-title { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #1e40af; padding-bottom: 6px; border-bottom: 2px solid #dbeafe; margin-bottom: 12px; display: flex; align-items: center; gap: 7px; }
+  .section-title::before { content: ''; width: 12px; height: 12px; background: #3b82f6; border-radius: 2px; flex-shrink: 0; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th { background: #1e3a5f; color: #fff; padding: 9px 10px; text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+  thead th:first-child { border-radius: 4px 0 0 0; } thead th:last-child { border-radius: 0 4px 0 0; }
+  tbody tr:nth-child(even) { background: #f8fafc; }
+  .no-occ { padding: 20px; text-align: center; color: #16a34a; font-weight: 600; background: #f0fdf4; border-radius: 8px; border: 1px solid #bbf7d0; }
+
+  .parts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .part-item { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 12px; display: flex; align-items: center; gap: 8px; }
+  .part-num { background: #1e40af; color: #fff; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+  .part-name { flex: 1; font-size: 11px; font-weight: 500; color: #1e40af; }
+  .part-cnt { font-size: 13px; font-weight: 700; color: #1e40af; background: #dbeafe; padding: 2px 7px; border-radius: 4px; }
+
+  .cal-wrap { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; }
+  .avail-bar { height: 12px; background: #e2e8f0; border-radius: 6px; overflow: hidden; margin: 6px 0; }
+  .avail-fill { height: 100%; border-radius: 6px; }
+  .sig-area { margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .sig-box { border-top: 1.5px solid #1e293b; padding-top: 8px; }
+  .sig-lbl { font-size: 11px; color: #64748b; font-weight: 500; }
+  .sig-name { font-size: 12px; font-weight: 600; color: #1e293b; margin-top: 2px; }
+  .footer-rpt { text-align: center; font-size: 10px; color: #94a3b8; margin-top: 18px; padding-top: 14px; border-top: 1px solid #e2e8f0; letter-spacing: 1px; }
+  .badge-ok { background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600; }
+  .badge-warn { background:#fffbeb;color:#d97706;border:1px solid #fde68a;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600; }
+  .badge-fail { background:#fef2f2;color:#dc2626;border:1px solid #fecaca;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600; }
+  .info-box { background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 16px;margin-bottom:16px; }
+  .info-grid { display:grid;grid-template-columns:1fr 1fr;gap:8px; }
+  .info-item { display:flex;flex-direction:column;gap:2px; }
+  .info-lbl { font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:1px;font-weight:500; }
+  .info-val { font-size:13px;font-weight:600;color:#1e293b; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-accent"></div>
+  <div class="cover-tag">MultCaixa Indústria · Manutenção Fibra · Relatório Técnico</div>
+  <div class="cover-title">${data.name}</div>
+  <div class="cover-sub">Operador: ${data.operator}</div>
+  <div class="cover-meta">
+    <div class="cover-item"><span class="cover-lbl">Período</span><span class="cover-val">${period}</span></div>
+    <div class="cover-item"><span class="cover-lbl">Dias registrados</span><span class="cover-val">${data.records.length} dias</span></div>
+    <div class="cover-item"><span class="cover-lbl">Gerado em</span><span class="cover-val">${generated}</span></div>
+    <div class="cover-item">
+      <span class="cover-lbl">Disponibilidade</span>
+      <span class="cover-val" style="color:${av >= 97 ? '#86efac' : av >= 90 ? '#fde68a' : '#fca5a5'}">${av.toFixed(1)}%</span>
+    </div>
+  </div>
+</div>
+
+<div style="padding:0 4px">
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi ${av >= 97 ? 'green' : av >= 90 ? 'orange' : 'red'}">
+      <div class="kpi-lbl">Disponibilidade</div>
+      <div class="kpi-val">${av.toFixed(1)}%</div>
+      <div class="kpi-sub">${av >= 97 ? '✓ Excelente' : av >= 90 ? '⚠ Regular' : '✗ Crítico'}</div>
+    </div>
+    <div class="kpi ${fails.length === 0 ? 'green' : fails.length <= 3 ? 'orange' : 'red'}">
+      <div class="kpi-lbl">Ocorrências</div>
+      <div class="kpi-val">${fails.length}</div>
+      <div class="kpi-sub">Em ${data.records.length} dias</div>
+    </div>
+    <div class="kpi ${stop === 0 ? 'green' : stop < 60 ? 'orange' : 'red'}">
+      <div class="kpi-lbl">Tempo de Parada</div>
+      <div class="kpi-val">${stop} min</div>
+      <div class="kpi-sub">${(stop / 60).toFixed(1)} horas total</div>
+    </div>
+    <div class="kpi ${fails.length === 0 ? 'green' : 'blue'}">
+      <div class="kpi-lbl">MTTR médio</div>
+      <div class="kpi-val">${mttr} min</div>
+      <div class="kpi-sub">Por ocorrência</div>
+    </div>
+  </div>
+
+  <!-- Barra de disponibilidade -->
+  <div class="section">
+    <div class="section-title">Indicador de Disponibilidade</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
+      <span style="font-size:11px;color:#64748b;min-width:80px">Disponibilidade</span>
+      <div class="avail-bar" style="flex:1">
+        <div class="avail-fill" style="width:${av.toFixed(1)}%;background:${av >= 97 ? '#22c55e' : av >= 90 ? '#f59e0b' : '#ef4444'}"></div>
+      </div>
+      <span style="font-size:13px;font-weight:700;color:${avColor};min-width:48px;text-align:right">${av.toFixed(1)}%</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span style="font-size:11px;color:#64748b;min-width:80px">Parada / Prod.</span>
+      <div class="avail-bar" style="flex:1">
+        <div class="avail-fill" style="width:${Math.min(100, stop / (data.records.length * 480) * 100).toFixed(1)}%;background:${stopColor}"></div>
+      </div>
+      <span style="font-size:13px;font-weight:700;color:${stopColor};min-width:48px;text-align:right">${(stop / (data.records.length * 480) * 100).toFixed(1)}%</span>
+    </div>
+  </div>
+
+  <!-- Timeline visual -->
+  <div class="section">
+    <div class="section-title">Timeline de Manutenção</div>
+    <div class="cal-wrap">
+      <div style="display:flex;flex-wrap:wrap;">${calRows}</div>
+      <div style="margin-top:10px;display:flex;gap:16px;font-size:10px;color:#64748b">
+        <span>✓ = Operação normal</span>
+        <span style="color:#ea580c">⚠ = Manutenção rápida (&lt;20min)</span>
+        <span style="color:#d97706">⚠ = Manutenção corretiva (20-59min)</span>
+        <span style="color:#dc2626">⚠ = Parada crítica (≥60min)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ocorrências -->
+  <div class="section">
+    <div class="section-title">Registro de Ocorrências (${fails.length} eventos)</div>
+    ${fails.length > 0 ? `
+    <table>
+      <thead><tr><th>Data</th><th>Problema / Serviço Realizado</th><th>Peças Trocadas</th><th style="text-align:center">Parada</th><th style="text-align:center">Tipo</th></tr></thead>
+      <tbody>${occRows}</tbody>
+    </table>` : `<div class="no-occ">✓ Nenhuma ocorrência registrada no período — Operação 100% normal</div>`}
+  </div>
+
+  <!-- Dias OK -->
+  ${okDays.length > 0 ? `
+  <div class="section">
+    <div class="section-title">Dias de Operação Normal (${okDays.length} dias)</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px">
+      ${okDays.map(r => `<span style="background:#dcfce7;color:#16a34a;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:600;border:1px solid #bbf7d0">${r.date}</span>`).join('')}
+    </div>
+  </div>` : ''}
+
+  <!-- Peças trocadas -->
+  ${plist.length > 0 ? `
+  <div class="section">
+    <div class="section-title">Peças Trocadas / Componentes (${plist.length} tipos)</div>
+    <div class="parts-grid">
+      ${plist.map(([nm, cnt], i) => `
+      <div class="part-item">
+        <div class="part-num">${i + 1}</div>
+        <div class="part-name">${nm}</div>
+        <div class="part-cnt">${cnt}×</div>
+      </div>`).join('')}
+    </div>
+  </div>` : ''}
+
+  <!-- Assinatura -->
+  <div class="sig-area">
+    <div class="sig-box">
+      <div class="sig-lbl">Operador responsável</div>
+      <div class="sig-name">${data.operator}</div>
+    </div>
+    <div class="sig-box">
+      <div class="sig-lbl">Responsável pela manutenção / supervisor</div>
+      <div class="sig-name">&nbsp;</div>
+    </div>
+  </div>
+
+  <div class="footer-rpt">
+    MultCaixa Indústria · Fichário Técnico de Manutenção Fibra · ${data.name} · Período: ${period} · Gerado em ${generated}
+  </div>
+
+</div>
+</body>
+</html>`;
+
+  const printWin = window.open('', '_blank', 'width=900,height=700');
+  if (!printWin) { alert('Permita pop-ups para gerar o relatório.'); return; }
+  printWin.document.write(reportHTML);
+  printWin.document.close();
+  printWin.onload = () => { printWin.focus(); printWin.print(); };
+  closeRptModal();
+}
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SEÇÃO DE COMPRESSORES
+     ══════════════════════════════════════════════════════════════ -->
+<div class="comp-wrap">
+  <!-- Divisor visual -->
+  <div class="comp-divider">
+    <div class="comp-divider-inner">
+      <span>⚙</span>
+      <span>Gestão de Compressores · MultCaixa</span>
+      <span>⚙</span>
+    </div>
+  </div>
+
+  <!-- Header Compressores -->
+  <div class="comp-hdr">
+    <div class="comp-hdr-grid">
+      <div>
+        <div class="comp-hdr-title">⚙ CONTROLE DE COMPRESSORES</div>
+        <div class="comp-hdr-sub">Monitoramento de horímetro · Manutenções programadas · Histórico de trocas</div>
+      </div>
+      <div class="comp-hdr-badges">
+        <div class="comp-badge" style="background:rgba(255,107,53,.1);border-color:rgba(255,107,53,.3);color:var(--accent2);">4 Compressores</div>
+        <div class="comp-badge" id="compTotalHrs" style="background:rgba(0,212,255,.07);border-color:rgba(0,212,255,.25);color:var(--accent);">— h total</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs Globais Compressores -->
+  <div class="comp-kpi-row">
+    <div class="comp-kcard">
+      <div class="comp-kico">⏱</div>
+      <div class="comp-klbl">Média Horímetro</div>
+      <div class="comp-kval" id="ckAvgHrs">—</div>
+      <div class="comp-ksub">horas por compressor</div>
+    </div>
+    <div class="comp-kcard gr">
+      <div class="comp-kico">✅</div>
+      <div class="comp-klbl">Trocas Realizadas</div>
+      <div class="comp-kval" id="ckTotalOil" style="color:var(--accent3)">—</div>
+      <div class="comp-ksub">trocas de óleo no período</div>
+    </div>
+    <div class="comp-kcard ye">
+      <div class="comp-kico">⚠</div>
+      <div class="comp-klbl">Próxima Manutenção</div>
+      <div class="comp-kval" id="ckNextMaint" style="color:var(--warn)">—</div>
+      <div class="comp-ksub" id="ckNextMaintSub">horas restantes mínimas</div>
+    </div>
+    <div class="comp-kcard">
+      <div class="comp-kico">🔩</div>
+      <div class="comp-klbl">Peças Trocadas</div>
+      <div class="comp-kval" id="ckTotalParts">—</div>
+      <div class="comp-ksub">total de itens substituídos</div>
+    </div>
+  </div>
+
+  <!-- Painel informativo: dados vêm da planilha -->
+  <div class="comp-input-section">
+    <div class="comp-input-title">📋 Atualização via Planilha Excel — mesma planilha das máquinas</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;">
+      <div style="background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.15);border-radius:6px;padding:12px;">
+        <div style="font-size:11px;color:var(--accent);font-family:'Source Code Pro',monospace;letter-spacing:2px;margin-bottom:6px;">① PREENCHER</div>
+        <div style="font-size:12px;color:var(--text);">Preencha as abas dos compressores no Excel com <b>Data · Horímetro · Manutenção · Peças</b>.</div>
+      </div>
+      <div style="background:rgba(255,107,53,.04);border:1px solid rgba(255,107,53,.15);border-radius:6px;padding:12px;">
+        <div style="font-size:11px;color:var(--accent2);font-family:'Source Code Pro',monospace;letter-spacing:2px;margin-bottom:6px;">② CARREGAR</div>
+        <div style="font-size:12px;color:var(--text);">Arraste ou selecione a planilha no topo. <b>Um único carregamento</b> atualiza máquinas e compressores.</div>
+      </div>
+      <div style="background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.15);border-radius:6px;padding:12px;">
+        <div style="font-size:11px;color:var(--accent3);font-family:'Source Code Pro',monospace;letter-spacing:2px;margin-bottom:6px;">③ ABAS DA PLANILHA</div>
+        <div style="font-size:12px;color:var(--muted);font-family:'Source Code Pro',monospace;line-height:1.8;">
+          Atlas Copco 15 HP<br>
+          Schulz SRP15 (15 HP) Fibra<br>
+          Schulz SRP20 (20 HP)<br>
+          Schulz SRP15 (15 HP) Especiais
+        </div>
+      </div>
+      <div style="background:rgba(139,92,246,.04);border:1px solid rgba(139,92,246,.15);border-radius:6px;padding:12px;">
+        <div style="font-size:11px;color:#8b5cf6;font-family:'Source Code Pro',monospace;letter-spacing:2px;margin-bottom:6px;">④ COLUNAS (A→D)</div>
+        <div style="font-size:12px;color:var(--muted);font-family:'Source Code Pro',monospace;line-height:1.8;">
+          A = Data<br>
+          B = Horímetro (h)<br>
+          C = Manutenção realizada<br>
+          D = Peças trocadas
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:10px;padding:8px 12px;background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.1);border-radius:5px;font-size:11px;color:var(--muted);font-family:'Source Code Pro',monospace;">
+      💡 Abas sem dados carregam os dados de exemplo do sistema. Troca de óleo detectada automaticamente quando a coluna C contém "óleo" ou "oleo".
+    </div>
+  </div>
+
+  <!-- Cards dos 4 compressores -->
+  <div style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--accent2);font-family:'Source Code Pro',monospace;display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+    <span>Painel Individual dos Compressores</span>
+    <span style="flex:1;height:1px;background:linear-gradient(90deg,rgba(255,107,53,.3),transparent);display:block;"></span>
+  </div>
+  <div class="comp-grid" id="compCardsGrid"></div>
+
+  <!-- Tabela histórico completo -->
+  <div class="comp-hist-panel">
+    <div class="comp-hist-header">
+      <div class="comp-hist-title">📋 Histórico Completo de Manutenções e Horímetro</div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <select class="finput" id="compHistFilter" onchange="renderCompHistTable()">
+          <option value="all">Todos os compressores</option>
+          <option value="0">Atlas Copco 15 HP</option>
+          <option value="1">Schulz SRP20 (20 HP)</option>
+          <option value="2">Schulz SRP15 #1</option>
+          <option value="3">Schulz SRP15 #2</option>
+        </select>
+        <select class="finput" id="compHistTypeFilter" onchange="renderCompHistTable()">
+          <option value="all">Todos os registros</option>
+          <option value="maint">Apenas manutenções</option>
+          <option value="ok">Apenas OK</option>
+        </select>
+      </div>
+    </div>
+    <div class="comp-hist-scroll">
+      <table class="comp-table">
+        <thead><tr><th>Data</th><th>Compressor</th><th>Horímetro</th><th>Manutenção / Serviço</th><th>Peças Trocadas</th><th>Status</th></tr></thead>
+        <tbody id="compHistTbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /.comp-wrap -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  MÓDULO DE COMPRESSORES — DADOS E LÓGICA
+// ═══════════════════════════════════════════════════════════════
+
+const COMPRESSORS = [
+  {
+    id: 0,
+    name: 'Atlas Copco 15 HP',
+    model: 'Atlas Copco · 15 HP',
+    brand: 'Atlas Copco',
+    power: '15 HP',
+    color: '#00d4ff',
+    maintenance: [
+      { label: 'Troca de óleo', interval: 1000 },
+      { label: 'Filtro de ar', interval: 2000 },
+      { label: 'Filtro de óleo', interval: 1000 },
+      { label: 'Filtro separador', interval: 4000 },
+      { label: 'Correia / tensor', interval: 4000 },
+      { label: 'Revisão geral', interval: 8000 },
+    ]
+  },
+  {
+    id: 1,
+    name: 'Schulz SRP15 (15 HP) Fibra',
+    model: 'Schulz SRP15 · 15 HP — Setor Fibra',
+    brand: 'Schulz',
+    power: '15 HP',
+    color: '#22c55e',
+    maintenance: [
+      { label: 'Troca de óleo', interval: 1000 },
+      { label: 'Filtro de ar', interval: 2000 },
+      { label: 'Filtro de óleo', interval: 1000 },
+      { label: 'Filtro separador', interval: 4000 },
+      { label: 'Correia / tensor', interval: 4000 },
+      { label: 'Revisão geral', interval: 8000 },
+    ]
+  },
+  {
+    id: 2,
+    name: 'Schulz SRP20 (20 HP)',
+    model: 'Schulz SRP20 · 20 HP',
+    brand: 'Schulz',
+    power: '20 HP',
+    color: '#f59e0b',
+    maintenance: [
+      { label: 'Troca de óleo', interval: 1000 },
+      { label: 'Filtro de ar', interval: 2000 },
+      { label: 'Filtro de óleo', interval: 1000 },
+      { label: 'Filtro separador', interval: 4000 },
+      { label: 'Correia / tensor', interval: 4000 },
+      { label: 'Revisão geral', interval: 8000 },
+    ]
+  },
+  {
+    id: 3,
+    name: 'Schulz SRP15 (15 HP) Especiais',
+    model: 'Schulz SRP15 · 15 HP — Setor Especiais',
+    brand: 'Schulz',
+    power: '15 HP',
+    color: '#8b5cf6',
+    maintenance: [
+      { label: 'Troca de óleo', interval: 1000 },
+      { label: 'Filtro de ar', interval: 2000 },
+      { label: 'Filtro de óleo', interval: 1000 },
+      { label: 'Filtro separador', interval: 4000 },
+      { label: 'Correia / tensor', interval: 4000 },
+      { label: 'Revisão geral', interval: 8000 },
+    ]
+  }
+];
+
+// ── STORAGE: usa localStorage para persistir os dados dos compressores ──
+const COMP_KEY = 'multcaixa_compressors_v2';
+
+function loadCompData() {
+  try {
+    const raw = localStorage.getItem(COMP_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  // ── DADOS COMPRESSORES: Atualizado em 23/03/2026 00:18 via script ──
+  return /*DEFAULT_COMP_DATA_START*/[{"readings":[],"lastOilChange":0},{"readings":[],"lastOilChange":0},{"readings":[],"lastOilChange":0},{"readings":[],"lastOilChange":0}]/*DEFAULT_COMP_DATA_END*/;
+}
+
+function saveCompData(data) {
+  try { localStorage.setItem(COMP_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+let _compData = loadCompData();
+
+// ── UTILITÁRIOS ──
+function compFmtDate(iso) {
+  if (!iso) return '—';
+  const [y, m, d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+function compTodayISO() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function getLastHrs(data) {
+  if (!data.readings || data.readings.length === 0) return 0;
+  const sorted = [...data.readings].sort((a,b)=>a.date.localeCompare(b.date));
+  return sorted[sorted.length-1].hrs || 0;
+}
+function getLastOilChange(data) {
+  // Find the most recent oil change reading
+  const oilChanges = data.readings.filter(r => {
+    const t = (r.maint || '').toLowerCase();
+    return t.includes('óleo') || t.includes('oleo') || t.includes('oil');
+  });
+  if (!oilChanges.length) return data.lastOilChange || 0;
+  const sorted = [...oilChanges].sort((a,b)=>a.date.localeCompare(b.date));
+  return sorted[sorted.length-1].hrs || 0;
+}
+
+// ── RENDERIZAR CARDS INDIVIDUAIS ──
+function renderCompCards() {
+  const grid = document.getElementById('compCardsGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  let totalHrs = 0, totalOilChanges = 0, minRemaining = Infinity, totalParts = 0;
+
+  COMPRESSORS.forEach((comp, i) => {
+    const data = _compData[i];
+    const currentHrs = getLastHrs(data);
+    totalHrs += currentHrs;
+
+    // Count oil changes
+    const oilChanges = data.readings.filter(r => {
+      const t = (r.maint || '').toLowerCase();
+      return t.includes('óleo') || t.includes('oleo');
+    });
+    totalOilChanges += oilChanges.length;
+
+    // Count parts
+    data.readings.forEach(r => {
+      if (r.parts && r.parts.trim()) {
+        totalParts += r.parts.split(',').filter(p => p.trim()).length;
+      }
+    });
+
+    // Build maintenance progress bars
+    let maintHTML = '';
+    let cardAlerts = '';
+    comp.maintenance.forEach(m => {
+      // Find last time this maintenance was done
+      const done = data.readings.filter(r => {
+        const t = (r.maint || '').toLowerCase();
+        return t.includes(m.label.toLowerCase().split(' ')[1] || m.label.toLowerCase().split(' ')[0]);
+      });
+      let lastDoneHrs = 0;
+      if (done.length) {
+        const sorted = [...done].sort((a,b)=>a.date.localeCompare(b.date));
+        lastDoneHrs = sorted[sorted.length-1].hrs || 0;
+      } else {
+        // Estimate: assume last maintenance was at a multiple of interval below current
+        lastDoneHrs = Math.floor(currentHrs / m.interval) * m.interval;
+        if (lastDoneHrs === currentHrs) lastDoneHrs -= m.interval;
+      }
+      const hrsUsed = currentHrs - lastDoneHrs;
+      const pct = Math.min(100, (hrsUsed / m.interval) * 100);
+      const remaining = m.interval - hrsUsed;
+      if (remaining < minRemaining && remaining > 0) minRemaining = remaining;
+      const barColor = pct >= 90 ? '#ef4444' : pct >= 70 ? '#f59e0b' : '#22c55e';
+      const remColor = pct >= 90 ? 'var(--danger)' : pct >= 70 ? 'var(--warn)' : 'var(--accent3)';
+      const remLabel = remaining <= 0 ? '⚠ VENCIDO' : `${remaining}h restantes`;
+      if (remaining <= 0) {
+        cardAlerts += `<div class="comp-alert danger">⚠ ${m.label}: MANUTENÇÃO VENCIDA!</div>`;
+      } else if (pct >= 80) {
+        cardAlerts += `<div class="comp-alert warn">⚠ ${m.label}: ${remaining}h para próxima manutenção</div>`;
+      }
+      maintHTML += `
+        <div class="comp-maint-item">
+          <div class="comp-maint-top">
+            <span class="comp-maint-name">${m.label}</span>
+            <span class="comp-maint-info" style="color:${remColor}">${remLabel}</span>
+          </div>
+          <div class="comp-maint-bar-wrap">
+            <div class="comp-maint-bar" style="width:${pct.toFixed(1)}%;background:${barColor};"></div>
+          </div>
+        </div>`;
+    });
+
+    const statusPct = Math.min(100, ((currentHrs - getLastOilChange(data)) / 1000) * 100);
+    const statusColor = statusPct >= 90 ? '#ef4444' : statusPct >= 70 ? '#f59e0b' : '#22c55e';
+    const statusLabel = statusPct >= 100 ? 'TROCA VENCIDA' : statusPct >= 80 ? 'TROCAR EM BREVE' : 'NORMAL';
+
+    const card = document.createElement('div');
+    card.className = 'comp-card';
+    card.innerHTML = `
+      <div class="comp-card-header">
+        <div>
+          <div class="comp-card-name" style="color:${comp.color}">${comp.name}</div>
+          <div class="comp-card-model">${comp.model}</div>
+        </div>
+        <div class="comp-card-status" style="background:rgba(34,197,94,.07);border-color:rgba(34,197,94,.25);color:${statusColor};">
+          <div style="width:6px;height:6px;border-radius:50%;background:${statusColor};"></div>
+          <span>${statusLabel}</span>
+        </div>
+      </div>
+      <div class="comp-card-body">
+        <div class="comp-horimeter">
+          <div>
+            <div class="comp-hor-lbl">Horímetro atual</div>
+            <div style="display:flex;align-items:baseline;gap:5px;">
+              <span class="comp-hor-val" style="color:${comp.color}">${currentHrs.toLocaleString('pt-BR')}</span>
+              <span class="comp-hor-unit">horas</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div class="comp-hor-lbl">Últ. troca de óleo</div>
+            <div style="font-size:13px;font-weight:600;font-family:'Source Code Pro',monospace;color:var(--muted);margin-top:2px;">${getLastOilChange(data).toLocaleString('pt-BR')} h</div>
+          </div>
+        </div>
+        ${cardAlerts}
+        <div style="font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-family:'Source Code Pro',monospace;margin-bottom:8px;margin-top:4px;">Intervalos de Manutenção</div>
+        <div class="comp-maint-list">${maintHTML}</div>
+        <div class="comp-mcard-footer">
+          <div class="comp-btn-rpt" onclick="openCompModal(${i})">📄 Relatório</div>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+
+  // Update global KPIs
+  document.getElementById('compTotalHrs').textContent = `${totalHrs.toLocaleString('pt-BR')} h total`;
+  document.getElementById('ckAvgHrs').textContent = Math.round(totalHrs / COMPRESSORS.length).toLocaleString('pt-BR');
+  document.getElementById('ckTotalOil').textContent = totalOilChanges;
+  document.getElementById('ckNextMaint').textContent = minRemaining === Infinity ? '—' : (minRemaining <= 0 ? 'VENCIDO' : minRemaining.toLocaleString('pt-BR') + 'h');
+  document.getElementById('ckNextMaintSub').textContent = minRemaining <= 0 ? 'Manutenção urgente!' : 'horas para próxima manutenção';
+  document.getElementById('ckTotalParts').textContent = totalParts;
+}
+
+// ── TABELA HISTÓRICO ──
+function renderCompHistTable() {
+  const filterComp = document.getElementById('compHistFilter').value;
+  const filterType = document.getElementById('compHistTypeFilter').value;
+  const tbody = document.getElementById('compHistTbody');
+  let rows = [];
+  _compData.forEach((data, i) => {
+    if (filterComp !== 'all' && parseInt(filterComp) !== i) return;
+    data.readings.forEach(r => {
+      const isOk = !r.maint || r.maint.toUpperCase() === 'OK';
+      if (filterType === 'maint' && isOk) return;
+      if (filterType === 'ok' && !isOk) return;
+      rows.push({ ...r, compIdx: i });
+    });
+  });
+  rows.sort((a, b) => b.date.localeCompare(a.date));
+  tbody.innerHTML = rows.map(r => {
+    const comp = COMPRESSORS[r.compIdx];
+    const isOk = !r.maint || r.maint.toUpperCase() === 'OK';
+    const hasParts = r.parts && r.parts.trim();
+    const badgeCls = isOk ? 'b-ok' : hasParts ? 'b-fail' : 'b-warn';
+    const badgeLbl = isOk ? 'OK' : hasParts ? 'TROCA' : 'MANUTENÇÃO';
+    return `<tr>
+      <td style="white-space:nowrap">${compFmtDate(r.date)}</td>
+      <td style="color:${comp.color};font-weight:600">${comp.name}</td>
+      <td style="font-family:'Source Code Pro',monospace;font-weight:600;color:var(--accent2)">${(r.hrs||0).toLocaleString('pt-BR')} h</td>
+      <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r.maint||''}">${r.maint||'—'}</td>
+      <td style="color:var(--muted);font-size:11px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r.parts||''}">${r.parts||'—'}</td>
+      <td><span class="badge ${badgeCls}">${badgeLbl}</span></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:18px;font-family:Source Code Pro,monospace;font-size:11px;">Nenhum registro encontrado</td></tr>';
+}
+
+// ── SALVAR LEITURA (via planilha Excel — formulário manual removido) ──
+function saveCompReading() {
+  // Dados dos compressores agora vêm exclusivamente da planilha Excel.
+  // Carregue a planilha atualizada usando o botão no topo do dashboard.
+  alert('Os dados dos compressores são carregados automaticamente pela planilha Excel.\n\nPreencha as abas de compressores no Excel e carregue a planilha no topo da página.');
+}
+
+// ── MODAL RELATÓRIO ──
+let _activeCompIdx = null;
+function openCompModal(idx) {
+  _activeCompIdx = idx;
+  const comp = COMPRESSORS[idx];
+  document.getElementById('compRptTitle').textContent = '🖨️ ' + comp.name;
+  document.getElementById('compRptSub').textContent = comp.model + ' · Configure o período';
+  const readings = _compData[idx].readings.map(r=>r.date).sort();
+  document.getElementById('compRptFrom').value = readings[0] || compTodayISO();
+  document.getElementById('compRptTo').value = readings[readings.length-1] || compTodayISO();
+  updateCompPreview();
+  document.getElementById('compRptModal').classList.add('open');
+}
+function closeCompModal() {
+  document.getElementById('compRptModal').classList.remove('open');
+  _activeCompIdx = null;
+}
+function setCompPeriod(key) {
+  if (_activeCompIdx === null) return;
+  const readings = _compData[_activeCompIdx].readings.map(r=>r.date).sort();
+  const mx = readings[readings.length-1] || compTodayISO();
+  const mxD = new Date(mx);
+  let from = readings[0] || compTodayISO();
+  if (key === '30') { const d = new Date(mxD); d.setDate(d.getDate()-29); from = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+  if (key === 'month') { from = `${mxD.getFullYear()}-${String(mxD.getMonth()+1).padStart(2,'0')}-01`; }
+  document.getElementById('compRptFrom').value = from;
+  document.getElementById('compRptTo').value = mx;
+  updateCompPreview();
+}
+function getCompRptData() {
+  if (_activeCompIdx === null) return null;
+  const from = document.getElementById('compRptFrom').value;
+  const to = document.getElementById('compRptTo').value;
+  const data = _compData[_activeCompIdx];
+  const filtered = data.readings.filter(r => (!from||r.date>=from) && (!to||r.date<=to));
+  return { comp: COMPRESSORS[_activeCompIdx], data: { ...data, readings: filtered } };
+}
+function updateCompPreview() {
+  const d = getCompRptData();
+  if (!d) return;
+  const { readings } = d.data;
+  const maints = readings.filter(r => r.maint && r.maint.toUpperCase() !== 'OK');
+  const oilChanges = readings.filter(r => { const t=(r.maint||'').toLowerCase(); return t.includes('óleo')||t.includes('oleo'); });
+  const parts = readings.filter(r=>r.parts&&r.parts.trim()).flatMap(r=>r.parts.split(',').map(p=>p.trim()).filter(Boolean));
+  const hrsArr = readings.map(r=>r.hrs).filter(Boolean).sort((a,b)=>a-b);
+  const variation = hrsArr.length>=2 ? (hrsArr[hrsArr.length-1]-hrsArr[0]) : 0;
+  const dates = readings.map(r=>r.date).sort();
+  const period = dates.length ? `${compFmtDate(dates[0])} → ${compFmtDate(dates[dates.length-1])}` : '—';
+  document.getElementById('compRptPreview').innerHTML = `
+    <div class="comp-mp-row"><span class="comp-mp-k">Período</span><span class="comp-mp-v">${period}</span></div>
+    <div class="comp-mp-row"><span class="comp-mp-k">Leituras registradas</span><span class="comp-mp-v">${readings.length}</span></div>
+    <div class="comp-mp-row"><span class="comp-mp-k">Manutenções realizadas</span><span class="comp-mp-v ${maints.length>0?'warn':'ok'}">${maints.length}</span></div>
+    <div class="comp-mp-row"><span class="comp-mp-k">Trocas de óleo</span><span class="comp-mp-v ok">${oilChanges.length}</span></div>
+    <div class="comp-mp-row"><span class="comp-mp-k">Peças / itens trocados</span><span class="comp-mp-v">${parts.length}</span></div>
+    <div class="comp-mp-row"><span class="comp-mp-k">Variação horímetro</span><span class="comp-mp-v" style="color:var(--accent2)">${variation.toLocaleString('pt-BR')} h</span></div>
+  `;
+}
+
+// ── IMPRIMIR RELATÓRIO COMPRESSOR ──
+function printCompReport() {
+  const d = getCompRptData();
+  if (!d) return;
+  const { comp, data } = d;
+  const { readings } = data;
+  const from = document.getElementById('compRptFrom').value;
+  const to = document.getElementById('compRptTo').value;
+  const maints = readings.filter(r => r.maint && r.maint.toUpperCase() !== 'OK');
+  const oilChanges = readings.filter(r => { const t=(r.maint||'').toLowerCase(); return t.includes('óleo')||t.includes('oleo'); });
+  const allParts = readings.filter(r=>r.parts&&r.parts.trim()).flatMap(r=>r.parts.split(',').map(p=>p.trim()).filter(Boolean));
+  const partMap = {};
+  allParts.forEach(p => { const k = p.charAt(0).toUpperCase()+p.slice(1); partMap[k]=(partMap[k]||0)+1; });
+  const partList = Object.entries(partMap).sort((a,b)=>b[1]-a[1]);
+  const dates = readings.map(r=>r.date).sort();
+  const hrsArr = readings.map(r=>r.hrs).filter(Boolean).sort((a,b)=>a-b);
+  const variation = hrsArr.length>=2 ? (hrsArr[hrsArr.length-1]-hrsArr[0]) : 0;
+  const currentHrs = hrsArr[hrsArr.length-1] || 0;
+  const period = dates.length ? `${compFmtDate(dates[0])} a ${compFmtDate(dates[dates.length-1])}` : '—';
+  const generated = new Date().toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+  // Maintenance status table
+  let maintStatusRows = '';
+  comp.maintenance.forEach(m => {
+    const done = readings.filter(r => { const t=(r.maint||'').toLowerCase(); return t.includes(m.label.toLowerCase().split(' ')[1]||m.label.toLowerCase().split(' ')[0]); });
+    let lastHrs = 0;
+    let lastDate = '—';
+    if (done.length) {
+      const sorted = [...done].sort((a,b)=>a.date.localeCompare(b.date));
+      lastHrs = sorted[sorted.length-1].hrs || 0;
+      lastDate = compFmtDate(sorted[sorted.length-1].date);
+    }
+    const hrsUsed = currentHrs - lastHrs;
+    const remaining = m.interval - hrsUsed;
+    const pct = Math.min(100, (hrsUsed/m.interval)*100);
+    const statusColor = remaining <= 0 ? '#dc2626' : pct >= 80 ? '#d97706' : '#16a34a';
+    const statusLabel = remaining <= 0 ? 'VENCIDA' : pct >= 80 ? 'ATENÇÃO' : 'OK';
+    const barColor = remaining <= 0 ? '#ef4444' : pct >= 80 ? '#f59e0b' : '#22c55e';
+    maintStatusRows += `<tr>
+      <td style="padding:8px 10px;border-bottom:1px solid #f1f5f9;font-size:12px;font-weight:500">${m.label}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #f1f5f9;font-size:12px;text-align:center">${m.interval.toLocaleString('pt-BR')} h</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #f1f5f9;font-size:12px;text-align:center">${lastDate}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #f1f5f9;font-size:12px;text-align:center;font-weight:600">${lastHrs > 0 ? lastHrs.toLocaleString('pt-BR')+' h' : '—'}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #f1f5f9;font-size:12px;text-align:center;font-weight:700;color:${statusColor}">${remaining <= 0 ? '⚠ VENCIDA' : remaining.toLocaleString('pt-BR')+' h'}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #f1f5f9;font-size:12px">
+        <div style="height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden">
+          <div style="width:${pct.toFixed(0)}%;height:100%;background:${barColor};border-radius:4px"></div>
+        </div>
+      </td>
+      <td style="padding:8px 10px;border-bottom:1px solid #f1f5f9;font-size:11px;text-align:center">
+        <span style="background:${remaining<=0?'#fef2f2':pct>=80?'#fffbeb':'#f0fdf4'};color:${statusColor};padding:2px 8px;border-radius:4px;font-weight:600">${statusLabel}</span>
+      </td>
+    </tr>`;
+  });
+
+  // History rows
+  const histRows = [...readings].sort((a,b)=>a.date.localeCompare(b.date)).map(r => {
+    const isOk = !r.maint || r.maint.toUpperCase() === 'OK';
+    const hasParts = r.parts && r.parts.trim();
+    const rowColor = isOk ? '#f0fdf4' : hasParts ? '#fef2f2' : '#fffbeb';
+    const badgeColor = isOk ? '#16a34a' : hasParts ? '#dc2626' : '#d97706';
+    const badgeBg = isOk ? '#f0fdf4' : hasParts ? '#fef2f2' : '#fffbeb';
+    const badgeLbl = isOk ? 'OK' : hasParts ? 'TROCA' : 'MANUTENÇÃO';
+    return `<tr>
+      <td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;font-size:12px;white-space:nowrap">${compFmtDate(r.date)}</td>
+      <td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;font-size:12px;text-align:right;font-weight:700;color:#1e40af">${(r.hrs||0).toLocaleString('pt-BR')} h</td>
+      <td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;font-size:12px">${r.maint||'—'}</td>
+      <td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;font-size:12px;color:#475569">${r.parts||'—'}</td>
+      <td style="padding:7px 10px;border-bottom:1px solid #f1f5f9;text-align:center">
+        <span style="background:${badgeBg};color:${badgeColor};padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;border:1px solid ${badgeColor}40">${badgeLbl}</span>
+      </td>
+    </tr>`;
+  }).join('');
+
+  const html = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Relatório – ${comp.name}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',Arial,sans-serif;color:#1e293b;background:#fff;font-size:13px;}
+@page{margin:14mm 12mm;size:A4;}
+@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
+.cover{background:linear-gradient(135deg,#1a0a00 0%,#4a1a00 50%,#3d1500 100%);color:#fff;padding:32px 36px 26px;position:relative;overflow:hidden;margin-bottom:22px;border-radius:0 0 12px 12px;}
+.cover::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#ff6b35,#fbbf24,#ff6b35);}
+.cover-tag{font-size:10px;letter-spacing:3px;text-transform:uppercase;opacity:.6;margin-bottom:8px;}
+.cover-title{font-size:28px;font-weight:700;letter-spacing:1px;margin-bottom:4px;color:#ff6b35;}
+.cover-model{font-size:14px;opacity:.75;margin-bottom:18px;}
+.cover-meta{display:flex;gap:28px;flex-wrap:wrap;}
+.cover-item{display:flex;flex-direction:column;gap:2px;}
+.cover-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:.5;}
+.cover-val{font-size:14px;font-weight:600;}
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;}
+.kpi{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;}
+.kpi::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:#ff6b35;}
+.kpi.ok::before{background:#22c55e;}.kpi.warn::before{background:#f59e0b;}
+.kpi-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#94a3b8;margin-bottom:6px;font-weight:500;}
+.kpi-val{font-size:26px;font-weight:700;color:#ea580c;margin-bottom:2px;}
+.kpi.ok .kpi-val{color:#16a34a;}.kpi.warn .kpi-val{color:#d97706;}
+.kpi-sub{font-size:11px;color:#64748b;}
+.section{margin-bottom:22px;}
+.section-title{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#ea580c;padding-bottom:6px;border-bottom:2px solid #fed7aa;margin-bottom:12px;}
+table{width:100%;border-collapse:collapse;}
+thead th{background:#7c2d12;color:#fff;padding:9px 10px;text-align:left;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+tbody tr:nth-child(even){background:#fafaf9;}
+.sig-area{margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:40px;}
+.sig-box{border-top:1.5px solid #1e293b;padding-top:8px;}
+.sig-lbl{font-size:11px;color:#64748b;font-weight:500;}
+.sig-name{font-size:12px;font-weight:600;color:#1e293b;margin-top:2px;}
+.footer-rpt{text-align:center;font-size:10px;color:#94a3b8;margin-top:18px;padding-top:14px;border-top:1px solid #e2e8f0;letter-spacing:1px;}
+.no-data{padding:18px;text-align:center;color:#16a34a;font-weight:600;background:#f0fdf4;border-radius:6px;border:1px solid #bbf7d0;}
+</style>
+</head>
+<body>
+<div class="cover">
+  <div class="cover-tag">MultCaixa Indústria · Gestão de Compressores · Relatório Técnico</div>
+  <div class="cover-title">${comp.name}</div>
+  <div class="cover-model">${comp.model}</div>
+  <div class="cover-meta">
+    <div class="cover-item"><span class="cover-lbl">Período</span><span class="cover-val">${period}</span></div>
+    <div class="cover-item"><span class="cover-lbl">Leituras</span><span class="cover-val">${readings.length}</span></div>
+    <div class="cover-item"><span class="cover-lbl">Horímetro atual</span><span class="cover-val">${currentHrs.toLocaleString('pt-BR')} h</span></div>
+    <div class="cover-item"><span class="cover-lbl">Variação</span><span class="cover-val" style="color:#fbbf24">+${variation.toLocaleString('pt-BR')} h</span></div>
+    <div class="cover-item"><span class="cover-lbl">Gerado em</span><span class="cover-val">${generated}</span></div>
+  </div>
+</div>
+<div style="padding:0 4px">
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-lbl">Horímetro Atual</div>
+      <div class="kpi-val">${currentHrs.toLocaleString('pt-BR')}</div>
+      <div class="kpi-sub">horas de operação</div>
+    </div>
+    <div class="kpi ${maints.length===0?'ok':maints.length<=2?'warn':''}">
+      <div class="kpi-lbl">Manutenções</div>
+      <div class="kpi-val" style="${maints.length===0?'color:#16a34a':maints.length<=2?'color:#d97706':''}">${maints.length}</div>
+      <div class="kpi-sub">eventos no período</div>
+    </div>
+    <div class="kpi ok">
+      <div class="kpi-lbl">Trocas de Óleo</div>
+      <div class="kpi-val">${oilChanges.length}</div>
+      <div class="kpi-sub">no período selecionado</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">Status das Manutenções Programadas</div>
+    <table>
+      <thead><tr><th>Tipo de Manutenção</th><th style="text-align:center">Intervalo</th><th style="text-align:center">Última Realização</th><th style="text-align:center">Horímetro</th><th style="text-align:center">Restante</th><th>Progresso</th><th style="text-align:center">Status</th></tr></thead>
+      <tbody>${maintStatusRows}</tbody>
+    </table>
+  </div>
+  <div class="section">
+    <div class="section-title">Histórico de Leituras (${readings.length} registros)</div>
+    ${readings.length > 0 ? `<table>
+      <thead><tr><th>Data</th><th style="text-align:right">Horímetro</th><th>Manutenção / Serviço</th><th>Peças Trocadas</th><th style="text-align:center">Tipo</th></tr></thead>
+      <tbody>${histRows}</tbody>
+    </table>` : `<div class="no-data">Sem registros no período selecionado</div>`}
+  </div>
+  ${partList.length ? `<div class="section">
+    <div class="section-title">Peças / Insumos Utilizados (${partList.length} tipos)</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+      ${partList.map(([nm,cnt],i)=>`<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:8px">
+        <div style="background:#ea580c;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">${i+1}</div>
+        <span style="flex:1;font-size:11px;font-weight:500;color:#9a3412">${nm}</span>
+        <span style="background:#fed7aa;color:#9a3412;padding:2px 7px;border-radius:4px;font-size:12px;font-weight:700">${cnt}×</span>
+      </div>`).join('')}
+    </div>
+  </div>` : ''}
+  <div class="sig-area">
+    <div class="sig-box"><div class="sig-lbl">Responsável pela manutenção</div><div class="sig-name">&nbsp;</div></div>
+    <div class="sig-box"><div class="sig-lbl">Supervisor / Aprovação</div><div class="sig-name">&nbsp;</div></div>
+  </div>
+  <div class="footer-rpt">MultCaixa Indústria · Controle de Compressores · ${comp.name} · Período: ${period} · Gerado: ${generated}</div>
+</div>
+</body>
+</html>`;
+
+  const pw = window.open('','_blank','width=900,height=700');
+  if (!pw) { alert('Permita pop-ups para gerar o relatório.'); return; }
+  pw.document.write(html);
+  pw.document.close();
+  pw.onload = () => { pw.focus(); pw.print(); };
+  closeCompModal();
+}
+
+// ── INIT COMPRESSORES ──
+document.addEventListener('DOMContentLoaded', () => {
+  renderCompCards();
+  renderCompHistTable();
+});
+
+// Close comp modal on Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeCompModal();
 });
 </script>
 </body>
