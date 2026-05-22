@@ -623,6 +623,49 @@
             <tbody id="compHistTbody"></tbody>
           </table>
         </div>
+
+        <!-- ── NR-13 SECTION ── -->
+        <div class="nr13-divider">
+          <div class="nr13-divider-inner">
+            <span>⚖️</span>
+            <span>CONTROLE NR-13 · VASOS DE PRESSÃO</span>
+          </div>
+        </div>
+
+        <!-- NR-13 KPI Row -->
+        <div class="nr13-kpi-row" id="nr13KpiRow">
+          <div class="nr13-kcard">
+            <div class="nr13-kico">🗓️</div>
+            <div class="nr13-klbl">Próxima Inspeção</div>
+            <div class="nr13-kval" id="nr13KpiNextDate">—</div>
+            <div class="nr13-ksub" id="nr13KpiDaysLeft">calculando...</div>
+          </div>
+          <div class="nr13-kcard">
+            <div class="nr13-kico">✅</div>
+            <div class="nr13-klbl">Status Geral</div>
+            <div class="nr13-kval" id="nr13KpiStatus">—</div>
+            <div class="nr13-ksub" id="nr13KpiStatusSub">—</div>
+          </div>
+          <div class="nr13-kcard">
+            <div class="nr13-kico">📋</div>
+            <div class="nr13-klbl">Documentação</div>
+            <div class="nr13-kval" id="nr13KpiDocs">—</div>
+            <div class="nr13-ksub">laudos e ARTs</div>
+          </div>
+          <div class="nr13-kcard">
+            <div class="nr13-kico">🏛️</div>
+            <div class="nr13-klbl">Norma</div>
+            <div class="nr13-kval" style="font-size:15px;letter-spacing:2px;">NR-13</div>
+            <div class="nr13-ksub">MTE · Vasos de Pressão</div>
+          </div>
+        </div>
+
+        <!-- NR-13 Cards -->
+        <div class="stitle">🏛️ Situação NR-13 por Compressor</div>
+        <div class="nr13-grid" id="nr13CardsGrid">
+          <!-- Cards gerados pelo JS -->
+        </div>
+
       </div>
     </div>
 
@@ -792,8 +835,106 @@
   .comp-input-grid{grid-template-columns:1fr 1fr;}
 }
 @media print{
-  .comp-wrap,.comp-modal-overlay{display:none!important;}
+  .comp-wrap,.comp-modal-overlay,.nr13-modal-overlay{display:none!important;}
 }
+
+/* ══════════════════════════════════════════════════════
+   NR-13 MODULE STYLES
+   ══════════════════════════════════════════════════════ */
+
+/* Divisor NR-13 */
+.nr13-divider{display:flex;align-items:center;gap:14px;margin:32px 0 22px;}
+.nr13-divider::before,.nr13-divider::after{content:'';flex:1;height:1px;}
+.nr13-divider::before{background:linear-gradient(90deg,transparent,rgba(99,102,241,.5));}
+.nr13-divider::after{background:linear-gradient(90deg,rgba(99,102,241,.5),transparent);}
+.nr13-divider-inner{display:flex;align-items:center;gap:10px;padding:7px 20px;background:rgba(99,102,241,.07);border:1px solid rgba(99,102,241,.25);border-radius:20px;white-space:nowrap;}
+.nr13-divider-inner span:last-child{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#818cf8;font-family:'Source Code Pro',monospace;}
+
+/* KPI row NR-13 */
+.nr13-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+@media(max-width:900px){.nr13-kpi-row{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:500px){.nr13-kpi-row{grid-template-columns:1fr;}}
+.nr13-kcard{background:linear-gradient(135deg,rgba(99,102,241,.06),rgba(139,92,246,.04));border:1px solid rgba(99,102,241,.2);border-radius:8px;padding:16px 18px;display:flex;flex-direction:column;gap:4px;}
+.nr13-kico{font-size:20px;margin-bottom:2px;}
+.nr13-klbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-family:'Source Code Pro',monospace;}
+.nr13-kval{font-size:18px;font-weight:700;color:#a5b4fc;font-family:'Source Code Pro',monospace;}
+.nr13-ksub{font-size:11px;color:var(--muted);}
+
+/* NR-13 Cards grid */
+.nr13-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:24px;}
+@media(max-width:680px){.nr13-grid{grid-template-columns:1fr;}}
+
+.nr13-card{background:linear-gradient(135deg,rgba(10,20,40,.8),rgba(14,22,44,.9));border:1px solid rgba(99,102,241,.2);border-radius:10px;overflow:hidden;position:relative;transition:border-color .2s,box-shadow .2s;}
+.nr13-card:hover{border-color:rgba(99,102,241,.45);box-shadow:0 0 24px rgba(99,102,241,.1);}
+.nr13-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--nr13-color,#818cf8),transparent);}
+
+.nr13-card-hdr{padding:14px 16px 10px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+.nr13-card-name{font-size:13px;font-weight:700;color:var(--nr13-color,#818cf8);letter-spacing:.5px;}
+.nr13-card-model{font-size:10px;color:var(--muted);font-family:'Source Code Pro',monospace;margin-top:2px;}
+.nr13-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;white-space:nowrap;border:1px solid;}
+.nr13-badge.ok{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:#4ade80;}
+.nr13-badge.atencao{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3);color:#fbbf24;}
+.nr13-badge.vencida{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:#f87171;animation:blink-nr13 1.5s infinite;}
+.nr13-badge.novo{background:rgba(99,102,241,.1);border-color:rgba(99,102,241,.3);color:#a5b4fc;}
+@keyframes blink-nr13{0%,100%{opacity:1}50%{opacity:.6}}
+
+.nr13-card-body{padding:0 16px 14px;}
+.nr13-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.nr13-info-item{}
+.nr13-info-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-family:'Source Code Pro',monospace;}
+.nr13-info-val{font-size:12px;font-weight:600;color:var(--text);margin-top:2px;font-family:'Source Code Pro',monospace;}
+.nr13-info-val.muted{color:var(--muted);font-weight:400;}
+
+/* Progress bar NR-13 */
+.nr13-progress-wrap{margin:10px 0 12px;}
+.nr13-progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.nr13-progress-lbl{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;font-family:'Source Code Pro',monospace;}
+.nr13-progress-rem{font-size:11px;font-weight:700;}
+.nr13-progress-track{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;}
+.nr13-progress-bar{height:100%;border-radius:3px;transition:width .6s ease;}
+
+/* Novo compressor info */
+.nr13-novo-info{background:rgba(99,102,241,.05);border:1px solid rgba(99,102,241,.15);border-radius:6px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:#a5b4fc;display:flex;align-items:flex-start;gap:8px;}
+
+/* Footer buttons NR-13 */
+.nr13-card-footer{display:flex;gap:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.04);flex-wrap:wrap;}
+.nr13-btn{flex:1;min-width:80px;padding:7px 8px;border-radius:6px;font-size:11px;font-weight:600;letter-spacing:.5px;text-align:center;cursor:pointer;transition:all .2s;border:1px solid;display:flex;align-items:center;justify-content:center;gap:5px;}
+.nr13-btn.laudo{background:rgba(99,102,241,.1);border-color:rgba(99,102,241,.3);color:#a5b4fc;}
+.nr13-btn.laudo:hover{background:rgba(99,102,241,.2);border-color:rgba(99,102,241,.5);}
+.nr13-btn.art{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.25);color:#fbbf24;}
+.nr13-btn.art:hover{background:rgba(245,158,11,.15);border-color:rgba(245,158,11,.4);}
+.nr13-btn.disabled{opacity:.35;cursor:not-allowed;pointer-events:none;}
+
+/* NR-13 Modal */
+.nr13-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:1200;backdrop-filter:blur(6px);align-items:center;justify-content:center;}
+.nr13-modal-overlay.open{display:flex;}
+.nr13-modal-box{background:#0b1628;border:1px solid rgba(99,102,241,.35);border-radius:12px;width:min(680px,96vw);max-height:92vh;overflow-y:auto;position:relative;box-shadow:0 0 80px rgba(99,102,241,.15),0 24px 64px rgba(0,0,0,.7);animation:slideUp .25s ease;}
+.nr13-modal-hdr{padding:20px 24px 16px;border-bottom:1px solid rgba(99,102,241,.15);position:sticky;top:0;background:#0b1628;z-index:10;}
+.nr13-modal-hdr::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#818cf8,#a5b4fc,transparent);}
+.nr13-modal-title{font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#a5b4fc;margin-bottom:3px;}
+.nr13-modal-sub{font-size:11px;color:var(--muted);font-family:'Source Code Pro',monospace;}
+.nr13-modal-close{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;}
+.nr13-modal-close:hover{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:var(--danger);}
+.nr13-modal-body{padding:20px 24px;}
+.nr13-modal-section{margin-bottom:20px;}
+.nr13-modal-section-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#818cf8;font-family:'Source Code Pro',monospace;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(99,102,241,.15);}
+.nr13-modal-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:500px){.nr13-modal-fields{grid-template-columns:1fr;}}
+.nr13-modal-field{}
+.nr13-modal-field-lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-family:'Source Code Pro',monospace;margin-bottom:3px;}
+.nr13-modal-field-val{font-size:13px;font-weight:600;color:var(--text);padding:8px 10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:6px;}
+.nr13-modal-field-val.ok{color:#4ade80;background:rgba(34,197,94,.05);border-color:rgba(34,197,94,.15);}
+.nr13-modal-field-val.warn{color:#fbbf24;background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.15);}
+.nr13-modal-field-val.danger{color:#f87171;background:rgba(239,68,68,.05);border-color:rgba(239,68,68,.15);}
+.nr13-modal-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;padding-top:14px;border-top:1px solid rgba(255,255,255,.04);}
+.nr13-modal-btn{padding:9px 18px;border-radius:7px;font-size:12px;font-weight:600;letter-spacing:.5px;cursor:pointer;transition:all .2s;border:1px solid;display:inline-flex;align-items:center;gap:6px;}
+.nr13-modal-btn.cancel{background:rgba(255,255,255,.04);border-color:var(--border);color:var(--muted);}
+.nr13-modal-btn.cancel:hover{background:rgba(255,255,255,.08);color:var(--text);}
+.nr13-modal-btn.laudo{background:rgba(99,102,241,.12);border-color:rgba(99,102,241,.35);color:#a5b4fc;}
+.nr13-modal-btn.laudo:hover{background:rgba(99,102,241,.22);border-color:rgba(99,102,241,.55);}
+.nr13-modal-btn.art{background:rgba(245,158,11,.09);border-color:rgba(245,158,11,.3);color:#fbbf24;}
+.nr13-modal-btn.art:hover{background:rgba(245,158,11,.18);border-color:rgba(245,158,11,.5);}
+.nr13-modal-btn.disabled{opacity:.35;cursor:not-allowed;pointer-events:none;}
 </style>
 
 <!-- MODAL RELATÓRIO COMPRESSOR -->
@@ -825,12 +966,26 @@
   </div>
 </div>
 
+<!-- ══ MODAL NR-13 DETALHES ══ -->
+<div class="nr13-modal-overlay no-print" id="nr13Modal">
+  <div class="nr13-modal-box">
+    <div class="nr13-modal-hdr">
+      <div class="nr13-modal-title" id="nr13ModalTitle">🏛️ NR-13 · Detalhes da Inspeção</div>
+      <div class="nr13-modal-sub" id="nr13ModalSub">Vaso de Pressão — NR-13 MTE</div>
+      <div class="nr13-modal-close" onclick="closeNr13Modal()">✕</div>
+    </div>
+    <div class="nr13-modal-body" id="nr13ModalBody">
+      <!-- preenchido pelo JS -->
+    </div>
+  </div>
+</div>
+
 <script>
 const DCOLS=['#00d4ff','#ef4444','#f59e0b','#8b5cf6','#22c55e','#f472b6','#34d399','#fb923c'];
 let _all=[], _selM=new Set(), _selO=new Set();
 
-// ── DADOS: Fichário técnico de máquinas (Caixas).xlsx · Atualizado em 21/05/2026 11:05 ──
-/* Atualizado em 21/05/2026 11:05 via script */
+// ── DADOS: Fichário técnico de máquinas (Caixas).xlsx · Atualizado em 21/05/2026 23:50 ──
+/* Atualizado em 21/05/2026 23:50 via script */
 const DEFAULT_DATA = [{"name":"Resina 1 - Pedro","operator":"Pedro","records":[{"date":"16/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"17/02/2026","problem":"Troca da base da esfera","partsRaw":"Base da esfera","partsArr":["Base da esfera"],"timeMin":20,"isOk":false,"operator":"Pedro"},{"date":"18/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"19/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"20/02/2026","problem":"Anel Trava da pistola","partsRaw":"Anel trava","partsArr":["Anel trava"],"timeMin":2,"isOk":false,"operator":"Pedro"},{"date":"23/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"24/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"25/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"26/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"27/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"02/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"03/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"04/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"05/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"06/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"09/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"10/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"11/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"12/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"13/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"14/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"16/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"17/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"18/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"19/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"20/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"23/03/2026","problem":"Troca de tela de pescador","partsRaw":"Tela de pescador","partsArr":["Tela de pescador"],"timeMin":45,"isOk":false,"operator":"Pedro"},{"date":"24/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"25/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"26/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"27/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"30/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"31/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"01/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"02/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"06/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"07/04/2026","problem":"Vazamento no retentor da resina. Foi realizado a manutenção.","partsRaw":"","partsArr":[],"timeMin":25,"isOk":false,"operator":"Pedro"},{"date":"08/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"09/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"10/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"13/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"14/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"15/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"16/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"17/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"20/04/2026","problem":"Troca de Raspador, Oring da varet do mek e mangueira do mek","partsRaw":"Raspador, Oring da vareta do mek, mangueira do mek","partsArr":["Raspador","Oring da vareta do mek","mangueira do mek"],"timeMin":20,"isOk":false,"operator":"Pedro"},{"date":"22/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"23/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"24/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"27/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"28/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"29/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"30/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"04/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"05/05/2026","problem":"manutenção na mangueira de ar mek","partsRaw":"","partsArr":[],"timeMin":15,"isOk":false,"operator":"Pedro"},{"date":"06/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"07/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"08/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"11/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"12/05/2026","problem":"Manutenção na mangueira de ar mek","partsRaw":"","partsArr":[],"timeMin":20,"isOk":false,"operator":"Pedro"},{"date":"13/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Pedro"},{"date":"14/05/2026","problem":"Manutenção na mangueira do mek","partsRaw":"","partsArr":[],"timeMin":20,"isOk":false,"operator":"Pedro"}]},{"name":"Resina 2 - Emerson","operator":"Emerson","records":[{"date":"16/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"17/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"18/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"19/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"20/02/2026","problem":"troca de anel trava, anel oring","partsRaw":"Anel trava, Anel oring do bujão","partsArr":["Anel trava","Anel oring do bujão"],"timeMin":0,"isOk":false,"operator":"Emerson"},{"date":"23/02/2026","problem":"Manutenção da turbina do motor","partsRaw":"","partsArr":[],"timeMin":30,"isOk":false,"operator":"Emerson"},{"date":"24/02/2026","problem":"Troca de bucha do bico da pistola, troca da turbina do motor","partsRaw":"Turbina do motor, bucha do bico da pistola","partsArr":["Turbina do motor","bucha do bico da pistola"],"timeMin":50,"isOk":false,"operator":"Emerson"},{"date":"25/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"26/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"27/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"02/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"03/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"04/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"05/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"06/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"09/03/2026","problem":"Manutenção na válvula 5 vias","partsRaw":"","partsArr":[],"timeMin":60,"isOk":false,"operator":"Emerson"},{"date":"10/03/2026","problem":"Troca de oring da agulha da resina","partsRaw":"Oring da agulha da resina","partsArr":["Oring da agulha da resina"],"timeMin":10,"isOk":false,"operator":"Emerson"},{"date":"11/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"12/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"13/03/2026","problem":"Manutenção e troca do raspador","partsRaw":"Raspador","partsArr":["Raspador"],"timeMin":56,"isOk":false,"operator":"Emerson"},{"date":"14/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"16/03/2026","problem":"Manutenção na turbina","partsRaw":"","partsArr":[],"timeMin":10,"isOk":false,"operator":"Emerson"},{"date":"17/03/2026","problem":"Manutenção na turbina","partsRaw":"","partsArr":[],"timeMin":40,"isOk":false,"operator":"Emerson"},{"date":"18/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"19/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"20/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"23/03/2026","problem":"Vazamento da mangueira de Mek","partsRaw":"","partsArr":[],"timeMin":30,"isOk":false,"operator":"Emerson"},{"date":"24/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"25/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"26/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"27/03/2026","problem":"Vazamento da mangueira de Mek","partsRaw":"Mangueira do Mek","partsArr":["Mangueira do Mek"],"timeMin":10,"isOk":false,"operator":"Emerson"},{"date":"30/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"31/03/2026","problem":"Manutenção da mangueira de ar","partsRaw":"","partsArr":[],"timeMin":6,"isOk":false,"operator":"Emerson"},{"date":"01/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"02/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"06/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"07/04/2026","problem":"Troca de camisa, raspador","partsRaw":"Camisa, Raspador","partsArr":["Camisa","Raspador"],"timeMin":30,"isOk":false,"operator":"Emerson"},{"date":"08/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"09/04/2026","problem":"Manutenção na válvula do mek","partsRaw":"Válvula do mek","partsArr":["Válvula do mek"],"timeMin":20,"isOk":false,"operator":"Emerson"},{"date":"10/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"13/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"14/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"15/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"16/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"17/04/2026","problem":"Troca da sede da esfera do mek","partsRaw":"Sede da esfera do mek","partsArr":["Sede da esfera do mek"],"timeMin":13,"isOk":false,"operator":"Emerson"},{"date":"20/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"22/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"23/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"24/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"27/04/2026","problem":"Troca da válvula fim de curso, manutenção na válvula 5 vias","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":false,"operator":"Emerson"},{"date":"28/04/2026","problem":"OK","partsRaw":"Válvula fim de curso","partsArr":["Válvula fim de curso"],"timeMin":15,"isOk":true,"operator":"Emerson"},{"date":"29/04/2026","problem":"Troca da tela do pescador","partsRaw":"Tela do pescador","partsArr":["Tela do pescador"],"timeMin":20,"isOk":false,"operator":"Emerson"},{"date":"30/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"04/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"05/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"06/05/2026","problem":"Troca de válvula 5 vias","partsRaw":"Válvula 5 vias","partsArr":["Válvula 5 vias"],"timeMin":10,"isOk":false,"operator":"Emerson"},{"date":"07/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"08/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"11/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"12/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"13/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Emerson"},{"date":"14/05/2026","problem":"Manutenção na mangueira do mek","partsRaw":"","partsArr":[],"timeMin":15,"isOk":false,"operator":"Emerson"},{"date":"14/05/2026","problem":"Troca do raspador","partsRaw":"Raspador","partsArr":["Raspador"],"timeMin":30,"isOk":false,"operator":"Emerson"}]},{"name":"Resina 3 - Antonio José","operator":"Antonio José","records":[{"date":"16/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"17/02/2026","problem":"Troca de camisa, raspador","partsRaw":"Camisa, Raspador","partsArr":["Camisa","Raspador"],"timeMin":85,"isOk":false,"operator":"Antonio José"},{"date":"18/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"19/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"20/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"23/02/2026","problem":"Revisão na bomba do Mek, sujeira na pistola no mek","partsRaw":"Oring da vareta do mek","partsArr":["Oring da vareta do mek"],"timeMin":35,"isOk":false,"operator":"Antonio José"},{"date":"24/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"25/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"26/02/2026","problem":"Troca de Oring","partsRaw":"Oring","partsArr":["Oring"],"timeMin":10,"isOk":false,"operator":"Antonio José"},{"date":"27/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"28/02/2026","problem":"Manutenção geral  e troca de retentor, no sábado sem expediente de produção","partsRaw":"Retentor","partsArr":["Retentor"],"timeMin":0,"isOk":false,"operator":"Antonio José"},{"date":"02/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"03/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"04/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"05/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"06/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"09/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"10/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"11/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"12/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"13/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"14/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"16/03/2026","problem":"Manutenção do limite","partsRaw":"","partsArr":[],"timeMin":15,"isOk":false,"operator":"Antonio José"},{"date":"17/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"18/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"19/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"20/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"23/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"24/03/2026","problem":"Troca da base da agulha da resina, manutenção no parafuso do batedor","partsRaw":"Base da agulha da resina, Parafuso do batedor do mek, Parafuso do batedor do mek","partsArr":["Base da agulha da resina","Parafuso do batedor do mek","Parafuso do batedor do mek"],"timeMin":45,"isOk":false,"operator":"Antonio José"},{"date":"25/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"26/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"27/03/2026","problem":"Vazamento na mangueira de ar do mek. Manutenção realizada.","partsRaw":"","partsArr":[],"timeMin":10,"isOk":false,"operator":"Antonio José"},{"date":"30/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"31/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"01/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"02/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"06/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"07/04/2026","problem":"Manutenção no porta láminas","partsRaw":"","partsArr":[],"timeMin":16,"isOk":false,"operator":"Antonio José"},{"date":"08/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"09/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"10/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"13/04/2026","problem":"Troca de Oring do mek","partsRaw":"Oring da vareta do mek","partsArr":["Oring da vareta do mek"],"timeMin":15,"isOk":false,"operator":"Antonio José"},{"date":"14/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"15/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"16/04/2026","problem":"Troca do Filtro pescador","partsRaw":"Filtro do pescador","partsArr":["Filtro do pescador"],"timeMin":17,"isOk":false,"operator":"Antonio José"},{"date":"17/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"20/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"22/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"23/04/2026","problem":"Troca do porta lâminas","partsRaw":"Porta Lâminas","partsArr":["Porta Lâminas"],"timeMin":10,"isOk":false,"operator":"Antonio José"},{"date":"24/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"27/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"28/04/2026","problem":"Troca da turbina do motor","partsRaw":"Turbina do motor","partsArr":["Turbina do motor"],"timeMin":20,"isOk":false,"operator":"Antonio José"},{"date":"29/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"30/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"04/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"05/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"06/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"07/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"08/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"11/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"12/05/2026","problem":"Manutenção na mangueira do mek","partsRaw":"","partsArr":[],"timeMin":15,"isOk":false,"operator":"Antonio José"},{"date":"13/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Antonio José"},{"date":"14/05/2026","problem":"Manutenção na mangueira do mek","partsRaw":"","partsArr":[],"timeMin":20,"isOk":false,"operator":"Antonio José"}]},{"name":"Resina 4 - Neto","operator":"Neto","records":[{"date":"11/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"12/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"13/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"},{"date":"14/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Neto"}]},{"name":"Gel Coat 1 - PC","operator":"PC","records":[{"date":"16/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"17/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"18/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"19/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"20/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"23/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"24/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"25/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"26/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"27/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"28/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"02/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"03/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"04/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"05/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"06/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"09/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"10/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"11/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"12/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"13/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"14/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"16/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"17/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"18/03/2026","problem":"Entrada de ar na mangueira de gel e manutenção","partsRaw":"Mangueira do pescador","partsArr":["Mangueira do pescador"],"timeMin":60,"isOk":false,"operator":"PC"},{"date":"19/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"20/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"23/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"24/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"25/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"26/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"27/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"30/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"31/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"01/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"02/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"06/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"07/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"08/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"09/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"10/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"13/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"14/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"15/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"16/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"17/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"20/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"22/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"23/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"24/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"27/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"28/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"29/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"30/04/2026","problem":"Manutenção na válvula de mek","partsRaw":"","partsArr":[],"timeMin":8,"isOk":false,"operator":"PC"},{"date":"04/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"05/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"06/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"07/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"08/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"11/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"12/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"13/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"},{"date":"14/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"PC"}]},{"name":"Gel Coat 2 - Dionísio","operator":"Dionísio","records":[{"date":"16/02/2026","problem":"Raspador ruim, efetuou a troca.","partsRaw":"Raspador","partsArr":["Raspador"],"timeMin":25,"isOk":false,"operator":"Dionísio"},{"date":"17/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"18/02/2026","problem":"Vasamento de Gel na pistola / sujeira na pistola. Trocou oring e fez limpeza","partsRaw":"Oring","partsArr":["Oring"],"timeMin":25,"isOk":false,"operator":"Dionísio"},{"date":"19/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"20/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"23/02/2026","problem":"Mangueira do Mek vazando. Efetuou o reparo na mangueira.","partsRaw":"","partsArr":[],"timeMin":20,"isOk":false,"operator":"Dionísio"},{"date":"24/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"25/02/2026","problem":"Mangueira do Mek vazando. Efetuou o reparo na mangueira.","partsRaw":"","partsArr":[],"timeMin":10,"isOk":false,"operator":"Dionísio"},{"date":"26/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"27/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"02/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"03/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"04/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"05/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"06/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"09/03/2026","problem":"Sujeira na mangueira de gel. Probelma na base da esfera agulha","partsRaw":"Base esfera agulha","partsArr":["Base esfera agulha"],"timeMin":35,"isOk":false,"operator":"Dionísio"},{"date":"10/03/2026","problem":"Reparo na mangueira do mek, sujeira na mangueira do gel","partsRaw":"","partsArr":[],"timeMin":20,"isOk":false,"operator":"Dionísio"},{"date":"11/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"12/03/2026","problem":"Troca da mangueira do mek","partsRaw":"Mangueira do mek","partsArr":["Mangueira do mek"],"timeMin":16,"isOk":false,"operator":"Dionísio"},{"date":"13/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"14/03/2026","problem":"Manutenção na mangueira do mek","partsRaw":"","partsArr":[],"timeMin":20,"isOk":false,"operator":"Dionísio"},{"date":"16/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"17/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"18/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"19/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"20/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"23/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"24/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"25/03/2026","problem":"Troca de camisa, raspador","partsRaw":"Camisa, Raspador","partsArr":["Camisa","Raspador"],"timeMin":35,"isOk":false,"operator":"Dionísio"},{"date":"26/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"27/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"30/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"31/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"01/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"02/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"06/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"07/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"08/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"09/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"10/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"13/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"14/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"15/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"16/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"17/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"20/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"22/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"23/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"24/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"27/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"28/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"29/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"30/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"04/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"05/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"06/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"07/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"08/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"11/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"12/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"13/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"},{"date":"14/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Dionísio"}]},{"name":"Gel Coat 3 - Evandro","operator":"Evandro","records":[{"date":"16/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"17/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"18/02/2026","problem":"Entupimento da pistola. Fez o processo para desentupir.","partsRaw":"","partsArr":[],"timeMin":20,"isOk":false,"operator":"Evandro"},{"date":"19/02/2026","problem":"Troca da válvula esfera do mek","partsRaw":"válvula esférica","partsArr":["válvula esférica"],"timeMin":11,"isOk":false,"operator":"Evandro"},{"date":"20/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"23/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"24/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"25/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"26/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"27/02/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"02/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"03/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"04/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"05/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"06/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"09/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"10/03/2026","problem":"Troca de oring da vareta do mek","partsRaw":"Oring da vareta do mek","partsArr":["Oring da vareta do mek"],"timeMin":5,"isOk":false,"operator":"Evandro"},{"date":"11/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"12/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"13/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"14/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"16/03/2026","problem":"Troca do raspador","partsRaw":"Raspador","partsArr":["Raspador"],"timeMin":20,"isOk":false,"operator":"Evandro"},{"date":"17/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"18/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"19/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"20/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"23/03/2026","problem":"Troca da base da esfera de gel / Manutenção da válvula do Mek","partsRaw":"Base da esfera","partsArr":["Base da esfera"],"timeMin":30,"isOk":false,"operator":"Evandro"},{"date":"24/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"25/03/2026","problem":"Manutenção  sistema de mangueira do Mek","partsRaw":"","partsArr":[],"timeMin":20,"isOk":false,"operator":"Evandro"},{"date":"26/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"27/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"30/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"31/03/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"01/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"02/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"06/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"07/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"08/04/2026","problem":"Troca da mangueira de ar, manutenção da mangueira do mek","partsRaw":"Mnagueira de ar","partsArr":["Mnagueira de ar"],"timeMin":30,"isOk":false,"operator":"Evandro"},{"date":"09/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"10/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"13/04/2026","problem":"Manutenção na mangueira do mek","partsRaw":"","partsArr":[],"timeMin":10,"isOk":false,"operator":"Evandro"},{"date":"14/04/2026","problem":"Troca de Pulmão","partsRaw":"Pulmão","partsArr":["Pulmão"],"timeMin":20,"isOk":false,"operator":"Evandro"},{"date":"15/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"16/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"17/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"20/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"22/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"23/04/2026","problem":"Troca da base da esfera de gel / Troca do oring agulha do gel","partsRaw":"Base da esfera do gel, Oring da agulha do gel","partsArr":["Base da esfera do gel","Oring da agulha do gel"],"timeMin":20,"isOk":false,"operator":"Evandro"},{"date":"24/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"27/04/2026","problem":"Manutenção no sistema de mek e gel, troca do oring,  base da esfera do gel","partsRaw":"Oring da vareta do mek, Base da esfera do gel","partsArr":["Oring da vareta do mek","Base da esfera do gel"],"timeMin":15,"isOk":false,"operator":"Evandro"},{"date":"28/04/2026","problem":"Troca de tela do pescador","partsRaw":"Tela do pescador","partsArr":["Tela do pescador"],"timeMin":20,"isOk":false,"operator":"Evandro"},{"date":"29/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"30/04/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"04/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"05/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"06/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"07/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"08/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"11/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"12/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"13/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"},{"date":"14/05/2026","problem":"OK","partsRaw":"OK","partsArr":[],"timeMin":0,"isOk":true,"operator":"Evandro"}]}];
 // ── AUTO-LOAD DEFAULT DATA ON PAGE OPEN ──
 window.addEventListener('DOMContentLoaded', () => {
@@ -2172,6 +2327,7 @@ function switchTab(tab) {
         try {
           renderCompCards();
           renderCompHistTable();
+          if (typeof renderNr13Cards === 'function') renderNr13Cards();
         } catch (e) {
           console.warn('Error rendering compressor data:', e);
         }
@@ -2364,6 +2520,348 @@ const COMPRESSORS = [
 
 // ── STORAGE: usa localStorage para persistir os dados dos compressores ──
 const COMP_KEY = 'multcaixa_compressors_v2';
+
+// ════════════════════════════════════════════════════════════════════
+//  NR-13 — DADOS DE INSPEÇÃO (injetados pelo atualizar_dashboard.py)
+// ════════════════════════════════════════════════════════════════════
+// URLS dos PDFs no GitHub Pages: nr13/<arquivo>
+const NR13_GITHUB_BASE = 'https://fabryciomsn-ops.github.io/dashboard-manutencao/nr13/';
+
+const NR13_DATA = /*NR13_DATA_START*/[{"compressor":"Atlas Copco 15 HP","tipoInspecao":"Inspeção Periódica","ultimaInspecao":"07/05/2024","proximaInspecao":"07/05/2028","numeroCertificado":"Laudo GX 11 FF 125 · Nº Série BQD 0105026","numeroART":"BA20240741666","tecnicoResponsavel":"Eng.º João Batista Marco da Silva · CREA-BA 29218/D","empresaInspetora":"Eng.º João Batista Marco da Silva (Autônomo)","pressaoMaxima":"8,85 bar","volumeVaso":"261 L","laudoFile":"Atlas_Copco_15_HP_-_Laudo_de_Inspeção_-ART.PDF","artFile":"ART_Geral.PDF","semDados":false},{"compressor":"Schulz SRP15 (15 HP) Fibra","tipoInspecao":null,"ultimaInspecao":null,"proximaInspecao":"07/05/2028","numeroCertificado":null,"numeroART":null,"tecnicoResponsavel":null,"empresaInspetora":null,"pressaoMaxima":"12,9 bar","volumeVaso":"193 L","laudoFile":null,"artFile":null,"semDados":true},{"compressor":"Schulz SRP20 (20 HP)","tipoInspecao":"Inspeção Periódica","ultimaInspecao":"07/05/2024","proximaInspecao":"07/05/2028","numeroCertificado":"Laudo SRP 3020 · Nº Série 24279","numeroART":"BA20240741666","tecnicoResponsavel":"Eng.º João Batista Marco da Silva · CREA-BA 29218/D","empresaInspetora":"Eng.º João Batista Marco da Silva (Autônomo)","pressaoMaxima":"9,0 bar (131 psig)","volumeVaso":"261 L","laudoFile":"Schulz_SRP20__20_HP__-_Laudo_de_Inspeção_-_ART.pdf","artFile":"ART_Geral.PDF","semDados":false},{"compressor":"Schulz SRP15 (15 HP) Especiais","tipoInspecao":"Inspeção Periódica","ultimaInspecao":"07/05/2024","proximaInspecao":"07/05/2028","numeroCertificado":"Laudo SRP 3015 · Nº Série 22300","numeroART":"BA20240741666","tecnicoResponsavel":"Eng.º João Batista Marco da Silva · CREA-BA 29218/D","empresaInspetora":"Eng.º João Batista Marco da Silva (Autônomo)","pressaoMaxima":"7,5 bar (109 psig)","volumeVaso":"261 L","laudoFile":"Schulz_SRP15__15_HP__Especiais_-_Laudo_de_Inspeção_-_ART.pdf","artFile":"ART_Geral.PDF","semDados":false}]/*NR13_DATA_END*/;
+
+// ════════════════════════════════════════════════════════════════════
+//  NR-13 — FUNÇÕES JS
+// ════════════════════════════════════════════════════════════════════
+
+function nr13ParseDate(str) {
+  if (!str) return null;
+  const [d, m, y] = str.split('/');
+  if (!d || !m || !y || y === '0000') return null;
+  return new Date(parseInt(y), parseInt(m) - 1, parseInt(d));
+}
+
+function nr13DaysRemaining(nr13Rec) {
+  const next = nr13ParseDate(nr13Rec.proximaInspecao);
+  if (!next) return null;
+  const today = new Date(); today.setHours(0,0,0,0);
+  return Math.floor((next - today) / 86400000);
+}
+
+function nr13Status(nr13Rec) {
+  if (nr13Rec.semDados) return 'novo';
+  const days = nr13DaysRemaining(nr13Rec);
+  if (days === null) return 'novo';
+  if (days < 0)   return 'vencida';
+  if (days <= 60) return 'atencao';
+  return 'ok';
+}
+
+function nr13StatusLabel(status) {
+  if (status === 'ok')      return '✅ REGULAR';
+  if (status === 'atencao') return '⚠️ ATENÇÃO';
+  if (status === 'vencida') return '🔴 VENCIDA';
+  if (status === 'novo')    return '🆕 NOVO';
+  return '—';
+}
+
+function nr13PctUsed(nr13Rec) {
+  const prev = nr13ParseDate(nr13Rec.ultimaInspecao);
+  const next = nr13ParseDate(nr13Rec.proximaInspecao);
+  if (!prev || !next) return 0;
+  const total = next - prev;
+  const used  = new Date() - prev;
+  return Math.min(100, Math.max(0, (used / total) * 100));
+}
+
+function renderNr13Cards() {
+  const grid = document.getElementById('nr13CardsGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  // KPI calc
+  let nearestDays = Infinity, docsCount = 0, statusCounts = { ok:0, atencao:0, vencida:0, novo:0 };
+
+  NR13_DATA.forEach((nr13, i) => {
+    const comp     = COMPRESSORS[i];
+    if (!comp) return;
+    const status   = nr13Status(nr13);
+    const days     = nr13DaysRemaining(nr13);
+    const pct      = nr13PctUsed(nr13);
+
+    statusCounts[status]++;
+    if (days !== null && !nr13.semDados && days < nearestDays) nearestDays = days;
+    if (nr13.laudoFile) docsCount++;
+    if (nr13.artFile)   docsCount++;
+
+    // Progress bar color
+    const barColor = status === 'vencida' ? '#ef4444' : status === 'atencao' ? '#f59e0b' : '#22c55e';
+    const remColor = status === 'vencida' ? '#f87171' : status === 'atencao' ? '#fbbf24' : '#4ade80';
+
+    let daysLabel = '';
+    if (nr13.semDados)          daysLabel = '<span style="color:#a5b4fc">Aguardando 1ª Inspeção</span>';
+    else if (days === null)     daysLabel = '<span style="color:var(--muted)">Data não informada</span>';
+    else if (days < 0)          daysLabel = `<span style="color:#f87171">VENCIDA há ${Math.abs(days)} dias ⚠️</span>`;
+    else if (days === 0)        daysLabel = `<span style="color:#f87171">Vence HOJE! ⚠️</span>`;
+    else                        daysLabel = `<span style="color:${remColor}">${days} dias restantes</span>`;
+
+    // Info fields for card
+    const infoFields = nr13.semDados ? `
+      <div class="nr13-novo-info">
+        <span style="font-size:18px">🆕</span>
+        <div>
+          <div style="font-weight:700;margin-bottom:3px">Compressor Novo</div>
+          <div style="opacity:.75">Ainda não foi realizada a primeira inspeção NR-13. Laudo e ART não disponíveis.</div>
+        </div>
+      </div>
+    ` : `
+      <div class="nr13-info-grid">
+        <div class="nr13-info-item">
+          <div class="nr13-info-lbl">Última Inspeção</div>
+          <div class="nr13-info-val">${nr13.ultimaInspecao || '—'}</div>
+        </div>
+        <div class="nr13-info-item">
+          <div class="nr13-info-lbl">Próxima Inspeção</div>
+          <div class="nr13-info-val" style="color:${remColor}">${nr13.proximaInspecao || '—'}</div>
+        </div>
+        <div class="nr13-info-item">
+          <div class="nr13-info-lbl">Nº Certificado</div>
+          <div class="nr13-info-val">${nr13.numeroCertificado || '—'}</div>
+        </div>
+        <div class="nr13-info-item">
+          <div class="nr13-info-lbl">Nº ART</div>
+          <div class="nr13-info-val">${nr13.numeroART || '—'}</div>
+        </div>
+        <div class="nr13-info-item" style="grid-column:1/-1">
+          <div class="nr13-info-lbl">Técnico Responsável</div>
+          <div class="nr13-info-val">${nr13.tecnicoResponsavel || '—'}</div>
+        </div>
+      </div>
+    `;
+
+    // Progress bar
+    const progressHTML = !nr13.semDados ? `
+      <div class="nr13-progress-wrap">
+        <div class="nr13-progress-top">
+          <span class="nr13-progress-lbl">Ciclo de Inspeção</span>
+          <span class="nr13-progress-rem" style="color:${remColor}">${daysLabel}</span>
+        </div>
+        <div class="nr13-progress-track">
+          <div class="nr13-progress-bar" style="width:${pct.toFixed(1)}%;background:${barColor};"></div>
+        </div>
+      </div>
+    ` : `
+      <div class="nr13-progress-wrap">
+        <div class="nr13-progress-top">
+          <span class="nr13-progress-lbl">1ª Inspeção Prevista</span>
+          <span class="nr13-progress-rem" style="color:#a5b4fc">${nr13.proximaInspecao || '—'}</span>
+        </div>
+      </div>
+    `;
+
+    // Footer buttons
+    const hasLaudo = !!nr13.laudoFile;
+    const hasArt   = !!nr13.artFile;
+    const footerHTML = `
+      <div class="nr13-card-footer">
+        <div class="nr13-btn laudo${hasLaudo ? '' : ' disabled'}" onclick="${hasLaudo ? `openNr13File(${i},'laudo')` : 'void(0)'}">
+          📄 Laudo de Inspeção
+        </div>
+        <div class="nr13-btn art${hasArt ? '' : ' disabled'}" onclick="${hasArt ? `openNr13File(${i},'art')` : 'void(0)'}">
+          📋 ART
+        </div>
+        <div class="nr13-btn laudo" style="flex:0;min-width:36px;padding:7px 10px;" title="Ver detalhes" onclick="openNr13Modal(${i})">ℹ️</div>
+      </div>
+    `;
+
+    const card = document.createElement('div');
+    card.className = 'nr13-card';
+    card.style.setProperty('--nr13-color', comp.color);
+    card.innerHTML = `
+      <div class="nr13-card-hdr">
+        <div>
+          <div class="nr13-card-name">${comp.name}</div>
+          <div class="nr13-card-model">${comp.model}</div>
+        </div>
+        <div class="nr13-badge ${status}">${nr13StatusLabel(status)}</div>
+      </div>
+      <div class="nr13-card-body">
+        ${infoFields}
+        ${progressHTML}
+        ${footerHTML}
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // Update KPIs
+  const kpiNextDate = document.getElementById('nr13KpiNextDate');
+  const kpiDaysLeft = document.getElementById('nr13KpiDaysLeft');
+  const kpiStatus   = document.getElementById('nr13KpiStatus');
+  const kpiStatusSub = document.getElementById('nr13KpiStatusSub');
+  const kpiDocs     = document.getElementById('nr13KpiDocs');
+
+  // Find nearest próxima inspeção among non-new compressors
+  let nearestDate = '—';
+  let nearestDaysVal = Infinity;
+  NR13_DATA.forEach(nr13 => {
+    if (nr13.semDados) return;
+    const d = nr13DaysRemaining(nr13);
+    if (d !== null && d < nearestDaysVal) {
+      nearestDaysVal = d;
+      nearestDate    = nr13.proximaInspecao || '—';
+    }
+  });
+
+  if (kpiNextDate) kpiNextDate.textContent = nearestDate;
+  if (kpiDaysLeft) {
+    if (nearestDaysVal === Infinity) kpiDaysLeft.textContent = 'sem data cadastrada';
+    else if (nearestDaysVal < 0)    kpiDaysLeft.textContent = `⚠ Vencida há ${Math.abs(nearestDaysVal)} dias`;
+    else                            kpiDaysLeft.textContent = `${nearestDaysVal} dias restantes`;
+  }
+
+  const hasDanger  = statusCounts.vencida > 0;
+  const hasWarning = statusCounts.atencao > 0;
+  if (kpiStatus) {
+    if (hasDanger)        kpiStatus.textContent = '🔴 VENCIDA';
+    else if (hasWarning)  kpiStatus.textContent = '⚠️ ATENÇÃO';
+    else                  kpiStatus.textContent = '✅ REGULAR';
+  }
+  if (kpiStatusSub) {
+    const parts = [];
+    if (statusCounts.vencida) parts.push(`${statusCounts.vencida} vencida(s)`);
+    if (statusCounts.atencao) parts.push(`${statusCounts.atencao} em atenção`);
+    if (statusCounts.ok)      parts.push(`${statusCounts.ok} regular(es)`);
+    if (statusCounts.novo)    parts.push(`${statusCounts.novo} novo(s)`);
+    kpiStatusSub.textContent = parts.join(' · ') || '—';
+  }
+  if (kpiDocs) kpiDocs.textContent = docsCount;
+}
+
+function openNr13File(idx, tipo) {
+  const nr13 = NR13_DATA[idx];
+  if (!nr13) return;
+  const filename = tipo === 'laudo' ? nr13.laudoFile : nr13.artFile;
+  if (!filename) return;
+  const url = NR13_GITHUB_BASE + filename;
+  window.open(url, '_blank');
+}
+
+function openNr13Modal(idx) {
+  const nr13 = NR13_DATA[idx];
+  const comp = COMPRESSORS[idx];
+  if (!nr13 || !comp) return;
+
+  const status   = nr13Status(nr13);
+  const days     = nr13DaysRemaining(nr13);
+  const remColor = status === 'vencida' ? '#f87171' : status === 'atencao' ? '#fbbf24' : '#4ade80';
+
+  let daysText = '—';
+  if (nr13.semDados)        daysText = 'Aguardando 1ª Inspeção';
+  else if (days === null)   daysText = 'Data não informada';
+  else if (days < 0)        daysText = `VENCIDA há ${Math.abs(days)} dias`;
+  else                      daysText = `${days} dias restantes`;
+
+  const statusClass = status === 'vencida' ? 'danger' : status === 'atencao' ? 'warn' : status === 'novo' ? '' : 'ok';
+
+  document.getElementById('nr13ModalTitle').textContent = `🏛️ NR-13 · ${comp.name}`;
+  document.getElementById('nr13ModalSub').textContent   = comp.model + ' · NR-13 MTE · Vaso de Pressão';
+
+  const hasLaudo = !!nr13.laudoFile;
+  const hasArt   = !!nr13.artFile;
+
+  document.getElementById('nr13ModalBody').innerHTML = `
+    <div class="nr13-modal-section">
+      <div class="nr13-modal-section-title">📊 Status da Inspeção</div>
+      <div class="nr13-modal-fields">
+        <div class="nr13-modal-field">
+          <div class="nr13-modal-field-lbl">Situação NR-13</div>
+          <div class="nr13-modal-field-val ${statusClass}">${nr13StatusLabel(status)}</div>
+        </div>
+        <div class="nr13-modal-field">
+          <div class="nr13-modal-field-lbl">Prazo</div>
+          <div class="nr13-modal-field-val ${statusClass}">${daysText}</div>
+        </div>
+        <div class="nr13-modal-field">
+          <div class="nr13-modal-field-lbl">Última Inspeção</div>
+          <div class="nr13-modal-field-val">${nr13.ultimaInspecao || '—'}</div>
+        </div>
+        <div class="nr13-modal-field">
+          <div class="nr13-modal-field-lbl">Próxima Inspeção</div>
+          <div class="nr13-modal-field-val" style="color:${remColor}">${nr13.proximaInspecao || '—'}</div>
+        </div>
+      </div>
+    </div>
+    <div class="nr13-modal-section">
+      <div class="nr13-modal-section-title">📋 Documentação</div>
+      <div class="nr13-modal-fields">
+        <div class="nr13-modal-field">
+          <div class="nr13-modal-field-lbl">Tipo de Inspeção</div>
+          <div class="nr13-modal-field-val">${nr13.tipoInspecao || '—'}</div>
+        </div>
+        <div class="nr13-modal-field">
+          <div class="nr13-modal-field-lbl">Empresa Inspetora</div>
+          <div class="nr13-modal-field-val">${nr13.empresaInspetora || '—'}</div>
+        </div>
+        <div class="nr13-modal-field">
+          <div class="nr13-modal-field-lbl">Nº Certificado / Laudo</div>
+          <div class="nr13-modal-field-val">${nr13.numeroCertificado || '—'}</div>
+        </div>
+        <div class="nr13-modal-field">
+          <div class="nr13-modal-field-lbl">Nº ART</div>
+          <div class="nr13-modal-field-val">${nr13.numeroART || '—'}</div>
+        </div>
+        <div class="nr13-modal-field" style="grid-column:1/-1">
+          <div class="nr13-modal-field-lbl">Técnico Responsável</div>
+          <div class="nr13-modal-field-val">${nr13.tecnicoResponsavel || '—'}</div>
+        </div>
+      </div>
+    </div>
+    <div class="nr13-modal-section">
+      <div class="nr13-modal-section-title">⚙️ Dados Técnicos do Vaso</div>
+      <div class="nr13-modal-fields">
+        <div class="nr13-modal-field">
+          <div class="nr13-modal-field-lbl">Pressão Máxima (PMTA)</div>
+          <div class="nr13-modal-field-val">${nr13.pressaoMaxima || '—'}</div>
+        </div>
+        <div class="nr13-modal-field">
+          <div class="nr13-modal-field-lbl">Volume do Vaso</div>
+          <div class="nr13-modal-field-val">${nr13.volumeVaso || '—'}</div>
+        </div>
+      </div>
+    </div>
+    <div class="nr13-modal-section" style="margin-bottom:0">
+      <div class="nr13-modal-section-title">📁 Documentos para Impressão</div>
+      ${nr13.semDados ? '<p style="color:var(--muted);font-size:12px;margin:0">Nenhum documento disponível — aguardando 1ª inspeção.</p>' : `
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:160px;padding:12px;background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.2);border-radius:8px;">
+            <div style="font-size:11px;color:#a5b4fc;font-weight:600;margin-bottom:4px;">📄 Laudo de Inspeção</div>
+            <div style="font-size:10px;color:var(--muted);margin-bottom:8px;">${nr13.laudoFile || 'Arquivo não configurado'}</div>
+            ${hasLaudo ? `<div class="nr13-modal-btn laudo" onclick="openNr13File(${idx},'laudo')">🖨️ Abrir / Imprimir</div>` : '<div style="font-size:10px;color:var(--muted)">Arquivo não disponível</div>'}
+          </div>
+          <div style="flex:1;min-width:160px;padding:12px;background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.18);border-radius:8px;">
+            <div style="font-size:11px;color:#fbbf24;font-weight:600;margin-bottom:4px;">📋 ART - Anotação de Resp. Técnica</div>
+            <div style="font-size:10px;color:var(--muted);margin-bottom:8px;">${nr13.artFile || 'Arquivo não configurado'}</div>
+            ${hasArt ? `<div class="nr13-modal-btn art" onclick="openNr13File(${idx},'art')">🖨️ Abrir / Imprimir</div>` : '<div style="font-size:10px;color:var(--muted)">Arquivo não disponível</div>'}
+          </div>
+        </div>
+      `}
+    </div>
+    <div class="nr13-modal-actions">
+      <div class="nr13-modal-btn cancel" onclick="closeNr13Modal()">Fechar</div>
+    </div>
+  `;
+
+  document.getElementById('nr13Modal').classList.add('open');
+}
+
+function closeNr13Modal() {
+  document.getElementById('nr13Modal').classList.remove('open');
+}
+// Close on overlay click
+document.getElementById('nr13Modal').addEventListener('click', function(e) {
+  if (e.target === this) closeNr13Modal();
+});
+
 
 function loadCompData() {
   // HTML injetado pelo script Python é sempre a fonte de verdade.
@@ -2907,11 +3405,12 @@ tbody tr{page-break-inside:avoid;}
 document.addEventListener('DOMContentLoaded', () => {
   renderCompCards();
   renderCompHistTable();
+  renderNr13Cards();
 });
 
 // Close comp modal on Escape
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeCompModal();
+  if (e.key === 'Escape') { closeCompModal(); closeNr13Modal(); }
 });
 </script>
 </body>
