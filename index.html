@@ -2958,82 +2958,43 @@ function isFeriado(data) {
 }
 
 function calcularConsumMedioHoras(data) {
-  // Calcula o consumo médio de horas/dia baseado em DIAS ÚTEIS (seg-sex, sem feriados)
-  // Considera apenas a partir de 23/04/2026
-  const dataInicio = new Date(2026, 3, 23); // 23/04/2026
-  
-  let datas_hrs = [];
-  
+  // Consumo = total de horas do período / quantidade de dias preenchidos na planilha
+  // Cada linha = um dia que o compressor efetivamente trabalhou
+  // Considera apenas a partir de 24/03/2026
+  const dataInicio = new Date(2026, 2, 24); // 24/03/2026
+
+  let leituras = [];
+
   if (data.readings && Array.isArray(data.readings)) {
     data.readings.forEach(r => {
       if (r.date && r.hrs !== undefined) {
         const dt = parseCompDate(r.date);
         if (dt && dt >= dataInicio) {
-          datas_hrs.push({dt, hrs: parseFloat(r.hrs) || 0});
+          leituras.push({dt, hrs: parseFloat(r.hrs) || 0});
         }
       }
     });
   }
-  
-  if (datas_hrs.length < 2) {
+
+  if (leituras.length < 2) {
     return {consumo: null, diasTrabalhados: 0, horasTotais: 0, dataInicio: null, dataFim: null};
   }
-  
-  datas_hrs.sort((a, b) => a.dt - b.dt);
-  
-  const totalHoras = datas_hrs[datas_hrs.length - 1].hrs - datas_hrs[0].hrs;
-  const primeiraData = datas_hrs[0].dt;
-  const ultimaData = datas_hrs[datas_hrs.length - 1].dt;
-  
-  // Contar apenas dias úteis (seg-sex) entre primeira e última leitura
-  const diasUteis = contarDiasUteis(primeiraData, ultimaData);
-  
-  if (diasUteis <= 0) {
-    return {consumo: null, diasTrabalhados: 0, horasTotais: totalHoras, dataInicio: primeiraData, dataFim: ultimaData};
-  }
-  
-  const consumo = totalHoras / diasUteis;
-  return {consumo, diasTrabalhados: diasUteis, horasTotais: totalHoras, dataInicio: primeiraData, dataFim: ultimaData};
-}
 
-function contarDiasUteis(dataInicio, dataFim) {
-  // Conta apenas dias úteis (segunda a sexta, excluindo feriados)
-  // Feriados brasileiros 2026
-  const feriados = [
-    [1, 1],   // Ano Novo
-    [2, 17],  // Carnaval
-    [2, 18],  // Carnaval
-    [3, 29],  // Páscoa
-    [4, 21],  // Tiradentes
-    [5, 1],   // Dia do Trabalho
-    [6, 4],   // Corpus Christi
-    [9, 7],   // Independência
-    [10, 12], // Nossa Senhora Aparecida
-    [11, 2],  // Finados
-    [11, 15], // Proclamação da República
-    [11, 20], // Consciência Negra
-    [12, 25], // Natal
-  ];
-  
-  function isFeriado(data) {
-    const mes = data.getMonth() + 1;
-    const dia = data.getDate();
-    return feriados.some(([m, d]) => m === mes && d === dia);
+  leituras.sort((a, b) => a.dt - b.dt);
+
+  const totalHoras = leituras[leituras.length - 1].hrs - leituras[0].hrs;
+  const primeiraData = leituras[0].dt;
+  const ultimaData   = leituras[leituras.length - 1].dt;
+
+  // Dias trabalhados = quantidade de linhas preenchidas no período
+  const diasTrabalhados = leituras.length;
+
+  if (totalHoras <= 0 || diasTrabalhados <= 1) {
+    return {consumo: null, diasTrabalhados, horasTotais: totalHoras, dataInicio: primeiraData, dataFim: ultimaData};
   }
-  
-  let diasUteis = 0;
-  let dataAtual = new Date(dataInicio);
-  
-  while (dataAtual <= dataFim) {
-    const dayOfWeek = dataAtual.getDay(); // 0=dom, 1=seg, 2=ter, 3=qua, 4=qui, 5=sex, 6=sab
-    // Se for seg-sex (1-5) e não for feriado
-    if (dayOfWeek >= 1 && dayOfWeek <= 5 && !isFeriado(dataAtual)) {
-      diasUteis++;
-    }
-    dataAtual.setDate(dataAtual.getDate() + 1);
-  }
-  
-  return diasUteis;
+
+  const consumo = totalHoras / diasTrabalhados;
+  return {consumo, diasTrabalhados, horasTotais: totalHoras, dataInicio: primeiraData, dataFim: ultimaData};
 }
 
 function calcularDataProximaManutencao(hrsRestantes, consumoMedio) {
@@ -3194,7 +3155,7 @@ function renderCompCards() {
                 <strong>${formatDataBR(dataProj.data)}</strong> (~${dataProj.diasUteisEstimados} dias úteis)
               </div>
               <div style="color:var(--muted);font-size:10px;margin-top:3px;">
-                Consumo: ${consumoInfo.consumo.toFixed(2)}h/dia · ${consumoInfo.diasTrabalhados} dias úteis
+                Consumo: ${consumoInfo.consumo.toFixed(2)}h/dia · ${consumoInfo.diasTrabalhados} dias trabalhados
               </div>
               <div style="color:var(--muted);font-size:9px;margin-top:2px;">
                 Período: ${formatDataBR(consumoInfo.dataInicio)} a ${formatDataBR(consumoInfo.dataFim)} (${consumoInfo.horasTotais}h)
@@ -3551,7 +3512,7 @@ tbody tr{page-break-inside:avoid;}
       <div>
         <div style="color:#0c4a6e;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Dias Úteis Trabalhados</div>
         <div style="font-weight:700;color:#0284c7;font-size:16px;">${consumoInfo.diasTrabalhados}</div>
-        <div style="color:#0c4a6e;font-size:10px;">seg-sex (sem feriados)</div>
+        <div style="color:#0c4a6e;font-size:10px;">dias preenchidos na planilha</div>
       </div>
       <div>
         <div style="color:#0c4a6e;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;">Horas Consumidas</div>
